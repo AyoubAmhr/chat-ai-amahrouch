@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AI Chat Free - n8n + Groq</title>
+  <title>AGULMAM IA</title>
   <style>
     * {
       margin: 0;
@@ -11,7 +11,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #667CCa 0%, #769877 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -61,19 +61,11 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .user-message {
-      justify-content: flex-end;
-    }
+    .user-message { justify-content: flex-end; }
 
     .user-text {
       background: #667eea;
@@ -94,10 +86,7 @@
       line-height: 1.5;
     }
 
-    .ai-icon {
-      font-size: 24px;
-      min-width: 30px;
-    }
+    .ai-icon { font-size: 24px; min-width: 30px; }
 
     .input-area {
       padding: 20px;
@@ -112,8 +101,6 @@
       border: 2px solid #eee;
       border-radius: 25px;
       font-size: 14px;
-      transition: border-color 0.3s;
-      font-family: inherit;
     }
 
     #msg:focus {
@@ -129,17 +116,6 @@
       border-radius: 25px;
       cursor: pointer;
       font-weight: bold;
-      transition: transform 0.2s, box-shadow 0.2s;
-      font-size: 14px;
-    }
-
-    button:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    button:active:not(:disabled) {
-      transform: translateY(0);
     }
 
     button:disabled {
@@ -152,7 +128,6 @@
       align-items: center;
       gap: 8px;
       color: #999;
-      font-size: 14px;
     }
 
     .dot {
@@ -163,198 +138,112 @@
       animation: bounce 1.4s infinite;
     }
 
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes bounce {
-      0%, 80%, 100% {
-        transform: scaleY(0.5);
-        opacity: 0.5;
-      }
-      40% {
-        transform: scaleY(1);
-        opacity: 1;
-      }
-    }
-
-    .error {
-      background: #ffebee;
-      color: #c62828;
-      padding: 12px 15px;
-      border-radius: 15px;
-      max-width: 80%;
-    }
-
-    .info-box {
-      background: #e3f2fd;
-      border-left: 4px solid #2196f3;
-      padding: 15px;
-      margin: 20px;
-      border-radius: 5px;
-      color: #1565c0;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .info-box strong {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    code {
-      background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: monospace;
-      font-size: 12px;
+      0%,80%,100% { transform: scaleY(0.5); opacity: 0.5; }
+      40% { transform: scaleY(1); opacity: 1; }
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
   <div class="header">
-    <h2>🤖 AI Chat with n8n</h2>
-    <p>Powered by Groq + n8n | AMAHROUCH</p>
+    <h2>AGULMAM IA</h2>
+    <p>Powered by Groq + n8n</p>
   </div>
 
-  <div id="chatBox" class="chat-box">
-    <div class="info-box">
-      <strong>⚙️ Configuration:</strong>
-      1. N8n Webhook Node → Enable CORS ☑️<br>
-      2. Activa l workflow n8n<br>
-      3. Copy l URL du webhook<br>
-      4. Update l variable <code>WEBHOOK_URL</code> ici
-    </div>
-  </div>
+  <div id="chatBox" class="chat-box"></div>
 
   <div class="input-area">
-    <input 
-      id="msg" 
-      placeholder="كتب سؤالك هنا... | Pose ta question..."
-      onkeypress="if(event.key=='Enter') send();"
-      autocomplete="off"
-    >
+    <input id="msg" placeholder="كتب سؤالك هنا..." onkeypress="if(event.key=='Enter') send()">
     <button id="sendBtn" onclick="send()">Send</button>
   </div>
 </div>
 
 <script>
-  // ⚠️ CHANGE THIS URL - Use /webhook-test path (n8n default)
-  const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook-test/chat-ai";
+const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook/chat-ai";
 
-  function addMessage(text, isUser = false) {
-    const chatBox = document.getElementById("chatBox");
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "message" + (isUser ? " user-message" : "");
-    
-    if (isUser) {
-      msgDiv.innerHTML = `<div class="user-text">${escapeHtml(text)}</div>`;
-    } else {
-      msgDiv.innerHTML = `<div class="ai-icon">🤖</div><div class="ai-text">${escapeHtml(text)}</div>`;
-    }
-    
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+function addMessage(text, isUser=false){
+  const chatBox = document.getElementById("chatBox");
+  const div = document.createElement("div");
+  div.className = "message" + (isUser ? " user-message" : "");
+
+  div.innerHTML = isUser
+    ? `<div class="user-text">${escapeHtml(text)}</div>`
+    : `<div class="ai-icon">🤖</div><div class="ai-text">${escapeHtml(text)}</div>`;
+
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function escapeHtml(text){
+  const d = document.createElement("div");
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+function showLoading(){
+  const chatBox = document.getElementById("chatBox");
+  const div = document.createElement("div");
+  div.id = "loading";
+  div.className = "message";
+  div.innerHTML = `
+    <div class="ai-icon">🤖</div>
+    <div class="loading">
+      <span>Loading</span>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>`;
+  chatBox.appendChild(div);
+}
+
+function removeLoading(){
+  const el = document.getElementById("loading");
+  if(el) el.remove();
+}
+
+async function send(){
+  const msg = document.getElementById("msg");
+  const sendBtn = document.getElementById("sendBtn");
+
+  if(!msg.value.trim()) return;
+
+  addMessage(msg.value,true);
+
+  const userMessage = msg.value;
+  msg.value = "";
+  sendBtn.disabled = true;
+
+  showLoading();
+
+  try {
+    const res = await fetch(WEBHOOK_URL,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message: userMessage })
+    });
+
+    const data = await res.json();
+    console.log("Response:", data);
+
+    removeLoading();
+
+    const reply = data.reply || data.choices?.[0]?.message?.content || "No response";
+
+    addMessage(reply,false);
+
+  } catch(err){
+    removeLoading();
+    addMessage("Error: "+err.message,false);
   }
 
-  function showLoading() {
-    const chatBox = document.getElementById("chatBox");
-    const loadingDiv = document.createElement("div");
-    loadingDiv.className = "message";
-    loadingDiv.id = "loading";
-    loadingDiv.innerHTML = `
-      <div class="ai-icon">🤖</div>
-      <div class="loading">
-        <span>يرجى الانتظار...</span>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-    `;
-    chatBox.appendChild(loadingDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function removeLoading() {
-    const loading = document.getElementById("loading");
-    if (loading) loading.remove();
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  async function send() {
-    const msgInput = document.getElementById("msg");
-    const sendBtn = document.getElementById("sendBtn");
-    const message = msgInput.value.trim();
-
-    if (!message) return;
-
-    addMessage(message, true);
-    msgInput.value = "";
-    sendBtn.disabled = true;
-
-    showLoading();
-
-    try {
-      const response = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: message
-        })
-      });
-
-      removeLoading();
-
-      if (!response.ok) {
-        const error = await response.json();
-        addMessage(`❌ Erreur: ${error.message || 'Erreur serveur'}`, false);
-        return;
-      }
-
-      const data = await response.json();
-      
-      // DEBUG: Shuf l response structure f console
-      console.log("Response data:", data);
-      console.log("Full response:", JSON.stringify(data, null, 2));
-      
-      // L path correct: reply direct from response
-      let reply = data.reply || data.message || "Réponse vide";
-      
-      // If reply is object, extract text
-      if (typeof reply === 'object' && reply !== null) {
-        reply = JSON.stringify(reply);
-      }
-      
-      console.log("Reply extracted:", reply);
-      
-      if (reply && reply !== "Réponse vide") {
-        addMessage(reply, false);
-      } else {
-        addMessage("❌ No response received", false);
-      }
-
-    } catch (err) {
-      removeLoading();
-      addMessage(`❌ Erreur connexion: ${err.message}`, false);
-      console.error("Erreur:", err);
-    } finally {
-      sendBtn.disabled = false;
-      msgInput.focus();
-    }
-  }
+  sendBtn.disabled = false;
+}
 </script>
 
 </body>
