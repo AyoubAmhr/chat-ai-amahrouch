@@ -1,262 +1,722 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <title>AGULMAM IA</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGULMAM IA - AI Assistant</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667CCa 0%, #769877 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .container {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    :root {
+      --color-cyan: #00d4ff;
+      --color-teal: #0fb5b5;
+      --color-purple: #6b5ae3;
+      --color-pink: #ff1493;
+      --color-green: #00d084;
+      --color-yellow: #ffd700;
+      --color-orange: #ff6b35;
+      --color-blue: #4a90e2;
+      
+      --bg-main: #0f172a;
+      --bg-card: #1a2340;
+      --bg-light: #ffffff;
+      --text-light: #ffffff;
+      --text-dark: #1a1a1a;
+      --text-gray: #8b8b8b;
+      --border-dark: #2d3e5f;
+    }
+
+    html, body {
       width: 100%;
-      max-width: 600px;
+      height: 100%;
       overflow: hidden;
     }
 
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 25px;
-      text-align: center;
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1a2945 50%, #2d1b5e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
     }
 
-    .header h2 { font-size: 28px; margin-bottom: 5px; }
-    .header p { font-size: 13px; opacity: 0.9; }
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 700px;
+      height: 100vh;
+      max-height: 900px;
+      background: var(--bg-card);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2), 0 40px 100px rgba(107, 90, 227, 0.15);
+      overflow: hidden;
+      animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+    }
 
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* === HEADER === */
+    .header {
+      background: linear-gradient(135deg, #1a2945 0%, #2d1b5e 50%, #1a2945 100%);
+      color: var(--text-light);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      right: -5%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(107, 90, 227, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-purple) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+      }
+      50% {
+        box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6), 0 0 40px rgba(107, 90, 227, 0.4);
+      }
+    }
+
+    .header-text h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+      background: linear-gradient(90deg, var(--color-cyan) 0%, var(--color-green) 50%, var(--color-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-text p {
+      font-size: 12px;
+      color: var(--color-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .developer-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 20px;
+      font-size: 10px;
+      color: var(--color-cyan);
+      font-weight: 600;
+    }
+
+    .developer-badge::before {
+      content: '✨';
+      font-size: 12px;
+    }
+
+    /* === CHAT BOX === */
     .chat-box {
-      height: 400px;
+      flex: 1;
       overflow-y: auto;
-      padding: 20px;
-      background: #f9f9f9;
-      border-bottom: 2px solid #eee;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: linear-gradient(180deg, #1a2945 0%, #0f172a 100%);
+      position: relative;
+    }
+
+    .chat-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(107, 90, 227, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--color-cyan), var(--color-purple));
+      border-radius: 4px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, var(--color-green), var(--color-pink));
     }
 
     .message {
-      margin-bottom: 15px;
       display: flex;
-      gap: 10px;
-      animation: slideIn 0.3s ease;
+      gap: 12px;
+      animation: messageIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      align-items: flex-end;
+      position: relative;
+      z-index: 1;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .user-message { justify-content: flex-end; }
+    .message.user {
+      justify-content: flex-end;
+    }
 
-    .user-text {
-      background: #667eea;
-      color: white;
-      padding: 12px 15px;
-      border-radius: 15px;
-      max-width: 80%;
+    .ai-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-teal) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    }
+
+    .message-text {
+      max-width: 75%;
       word-wrap: break-word;
+      line-height: 1.6;
+      font-size: 14px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      animation: bubbleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .ai-text {
-      background: #e0e0e0;
-      color: #333;
-      padding: 12px 15px;
-      border-radius: 15px;
-      max-width: 80%;
-      word-wrap: break-word;
-      line-height: 1.5;
+    @keyframes bubbleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
-    .ai-icon { font-size: 24px; min-width: 30px; }
+    .message.user .message-text {
+      background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-teal) 100%);
+      color: var(--text-dark);
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 8px 20px rgba(0, 212, 255, 0.25);
+      font-weight: 500;
+    }
 
+    .message.ai .message-text {
+      background: rgba(107, 90, 227, 0.2);
+      color: var(--text-light);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 4px 12px rgba(107, 90, 227, 0.15);
+    }
+
+    /* === LOADING STATE === */
+    .loading-container {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .loading-text {
+      color: var(--color-cyan);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 5px;
+      height: 24px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) {
+      background: var(--color-cyan);
+    }
+
+    .dot:nth-child(2) {
+      background: var(--color-green);
+      animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(3) {
+      background: var(--color-purple);
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0.7);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* === INPUT AREA === */
     .input-area {
-      padding: 20px;
-      background: white;
+      padding: 16px 24px 24px 24px;
+      background: linear-gradient(180deg, rgba(42, 55, 94, 0.5) 0%, var(--bg-card) 100%);
+      border-top: 1px solid rgba(0, 212, 255, 0.1);
       display: flex;
-      gap: 10px;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      border: 1.5px solid rgba(0, 212, 255, 0.2);
+      border-radius: 24px;
+      background: rgba(26, 41, 64, 0.6);
+      transition: all 0.3s ease;
+      padding: 0 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      transition: left 0.3s ease;
+    }
+
+    .input-wrapper:focus-within::before {
+      left: 100%;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--color-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15), inset 0 0 12px rgba(0, 212, 255, 0.05);
+      background: rgba(26, 41, 64, 0.9);
     }
 
     #msg {
       flex: 1;
-      padding: 12px 15px;
-      border: 2px solid #eee;
-      border-radius: 25px;
-      font-size: 14px;
-    }
-
-    #msg:focus { outline: none; border-color: #667eea; }
-
-    button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
       border: none;
-      padding: 12px 25px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
+      background: transparent;
+      outline: none;
+      padding: 12px 0;
+      font-size: 14px;
+      color: var(--text-light);
+      font-family: inherit;
+      resize: none;
+      max-height: 100px;
     }
 
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    #msg::placeholder {
+      color: var(--text-gray);
+    }
 
-    .loading {
+    .send-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-teal) 50%, var(--color-green) 100%);
+      color: var(--text-dark);
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #999;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
-    .dot {
-      width: 8px; height: 8px;
-      background: #667eea;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite;
+    .send-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
     }
 
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
+    .send-btn:hover:not(:disabled)::before {
+      left: 100%;
+    }
 
-    @keyframes bounce {
-      0%,80%,100% { transform: scaleY(0.5); opacity: 0.5; }
-      40% { transform: scaleY(1); opacity: 1; }
+    .send-btn:hover:not(:disabled) {
+      transform: scale(1.1);
+      box-shadow: 0 12px 30px rgba(0, 212, 255, 0.5), 0 0 30px rgba(0, 208, 132, 0.3);
+    }
+
+    .send-btn:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* === EMPTY STATE === */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .empty-state-text {
+      font-size: 16px;
+      color: var(--color-cyan);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 640px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        border-radius: 20px;
+        max-height: none;
+      }
+
+      .header {
+        padding: 16px 20px;
+      }
+
+      .header-content {
+        gap: 12px;
+      }
+
+      .header-icon-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+      }
+
+      .header-text h1 {
+        font-size: 22px;
+      }
+
+      .developer-badge {
+        position: static;
+        margin-top: 8px;
+        width: fit-content;
+        margin-left: auto;
+      }
+
+      .chat-box {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .message-text {
+        max-width: 85%;
+        font-size: 13px;
+      }
+
+      .input-area {
+        padding: 12px 16px 20px 16px;
+        gap: 10px;
+      }
+
+      .input-wrapper {
+        padding: 0 12px;
+      }
+
+      #msg {
+        padding: 10px 0;
+        font-size: 13px;
+      }
+
+      .send-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <div class="header-icon-circle">🤖</div>
+        <div class="header-text">
+          <h1>AGULMAM IA</h1>
+          <p>AI Assistant Powered by Groq</p>
+        </div>
+      </div>
+      <div class="developer-badge">AMAHROUCH AYOUB</div>
+    </div>
 
-<div class="container">
-  <div class="header">
-    <h2>AGULMAM IA</h2>
-    <p>Powered by Groq + n8n</p>
+    <div id="chatBox" class="chat-box">
+      <div class="empty-state">
+        <div class="empty-state-icon">💭</div>
+        <div class="empty-state-text">مرحبا! اكتب سؤالك وسأساعدك</div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrapper">
+        <input
+          id="msg"
+          type="text"
+          placeholder="كتب سؤالك هنا..."
+          onkeypress="if(event.key=='Enter') send()"
+        >
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="send()" title="إرسال">
+        ➤
+      </button>
+    </div>
   </div>
 
-  <div id="chatBox" class="chat-box"></div>
+  <script>
+    const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook/chat-ai";
 
-  <div class="input-area">
-    <input id="msg" placeholder="كتب سؤالك هنا..." onkeypress="if(event.key=='Enter') send()">
-    <button id="sendBtn" onclick="send()">Send</button>
-  </div>
-</div>
-
-<script>
-const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook/chat-ai";
-
-function addMessage(text, isUser = false) {
-  const chatBox = document.getElementById("chatBox");
-  const div = document.createElement("div");
-  div.className = "message" + (isUser ? " user-message" : "");
-  div.innerHTML = isUser
-    ? `<div class="user-text">${escapeHtml(text)}</div>`
-    : `<div class="ai-icon">🤖</div><div class="ai-text">${escapeHtml(text)}</div>`;
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function escapeHtml(text) {
-  const d = document.createElement("div");
-  d.textContent = text;
-  return d.innerHTML;
-}
-
-function showLoading() {
-  const chatBox = document.getElementById("chatBox");
-  const div = document.createElement("div");
-  div.id = "loading";
-  div.className = "message";
-  div.innerHTML = `
-    <div class="ai-icon">🤖</div>
-    <div class="loading">
-      <span>Loading</span>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>`;
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function removeLoading() {
-  const el = document.getElementById("loading");
-  if (el) el.remove();
-}
-
-async function fetchWithRetry(url, options, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(url, options);
-
-      // Get raw text first
-      const text = await res.text();
-
-      // If empty response, retry
-      if (!text || text.trim() === "") {
-        if (i < retries - 1) {
-          await new Promise(r => setTimeout(r, 1000));
-          continue;
-        }
-        throw new Error("Réponse vide du serveur");
-      }
-
-      // Parse JSON
-    try {
-  const data = JSON.parse(text);
-    return data;
-        } catch (e) {
-      // Ila machi JSON — rja3 text directly khabar reply
-      return { reply: text };
-      }
-
-    } catch (err) {
-      if (i === retries - 1) throw err;
-      await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
     }
-  }
-}
 
-async function send() {
-  const msg = document.getElementById("msg");
-  const sendBtn = document.getElementById("sendBtn");
+    function addMessage(text, isUser = false) {
+      const chatBox = document.getElementById("chatBox");
 
-  if (!msg.value.trim()) return;
+      // Remove empty state if first message
+      const emptyState = chatBox.querySelector('.empty-state');
+      if (emptyState && chatBox.children.length === 1) {
+        emptyState.remove();
+      }
 
-  addMessage(msg.value, true);
-  const userMessage = msg.value;
-  msg.value = "";
-  sendBtn.disabled = true;
-  showLoading();
+      const div = document.createElement("div");
+      div.className = `message ${isUser ? 'user' : 'ai'}`;
 
-  try {
-    const data = await fetchWithRetry(WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMessage })
-    });
+      if (isUser) {
+        div.innerHTML = `<div class="message-text">${escapeHtml(text)}</div>`;
+      } else {
+        div.innerHTML = `
+          <div class="ai-avatar">🎯</div>
+          <div class="message-text">${escapeHtml(text)}</div>
+        `;
+      }
 
-    removeLoading();
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-    const reply = data.reply
-      || data.choices?.[0]?.message?.content
-      || data.message
-      || "Machi jawab";
+    function showLoading() {
+      const chatBox = document.getElementById("chatBox");
 
-    addMessage(reply, false);
+      // Remove empty state if first message
+      const emptyState = chatBox.querySelector('.empty-state');
+      if (emptyState && chatBox.children.length === 1) {
+        emptyState.remove();
+      }
 
-  } catch (err) {
-    removeLoading();
-    addMessage("Khata: " + err.message, false);
-  }
+      const div = document.createElement("div");
+      div.id = "loading";
+      div.className = "message ai";
+      div.innerHTML = `
+        <div class="ai-avatar">🤖</div>
+        <div class="loading-container">
+          <span class="loading-text">جاري المعالجة</span>
+          <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      `;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-  sendBtn.disabled = false;
-  msg.focus();
-}
-</script>
+    function removeLoading() {
+      const el = document.getElementById("loading");
+      if (el) el.remove();
+    }
 
+    async function fetchWithRetry(url, options, retries = 3) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const res = await fetch(url, options);
+          const text = await res.text();
+
+          if (!text || text.trim() === "") {
+            if (i < retries - 1) {
+              await new Promise(r => setTimeout(r, 1000));
+              continue;
+            }
+            throw new Error("الخادم لم يرد");
+          }
+
+          try {
+            const data = JSON.parse(text);
+            return data;
+          } catch (e) {
+            return { reply: text };
+          }
+        } catch (err) {
+          if (i === retries - 1) throw err;
+          await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+        }
+      }
+    }
+
+    async function send() {
+      const msg = document.getElementById("msg");
+      const sendBtn = document.getElementById("sendBtn");
+
+      if (!msg.value.trim()) return;
+
+      addMessage(msg.value, true);
+      const userMessage = msg.value;
+      msg.value = "";
+      msg.focus();
+      sendBtn.disabled = true;
+      showLoading();
+
+      try {
+        const data = await fetchWithRetry(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMessage })
+        });
+
+        removeLoading();
+
+        const reply = data.reply
+          || data.choices?.[0]?.message?.content
+          || data.message
+          || "عذراً، حدث خطأ ما";
+
+        addMessage(reply, false);
+      } catch (err) {
+        removeLoading();
+        addMessage(`⚠️ خطأ: ${err.message}`, false);
+      }
+
+      sendBtn.disabled = false;
+    }
+  </script>
 </body>
 </html>
