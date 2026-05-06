@@ -3,11 +3,7 @@
 <head>
   <title>AGULMAM IA</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,7 +18,7 @@
     .container {
       background: white;
       border-radius: 15px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       width: 100%;
       max-width: 600px;
       overflow: hidden;
@@ -35,15 +31,8 @@
       text-align: center;
     }
 
-    .header h2 {
-      font-size: 28px;
-      margin-bottom: 5px;
-    }
-
-    .header p {
-      font-size: 13px;
-      opacity: 0.9;
-    }
+    .header h2 { font-size: 28px; margin-bottom: 5px; }
+    .header p { font-size: 13px; opacity: 0.9; }
 
     .chat-box {
       height: 400px;
@@ -103,10 +92,7 @@
       font-size: 14px;
     }
 
-    #msg:focus {
-      outline: none;
-      border-color: #667eea;
-    }
+    #msg:focus { outline: none; border-color: #667eea; }
 
     button {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -118,10 +104,7 @@
       font-weight: bold;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .loading {
       display: flex;
@@ -131,8 +114,7 @@
     }
 
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       background: #667eea;
       border-radius: 50%;
       animation: bounce 1.4s infinite;
@@ -147,7 +129,6 @@
     }
   </style>
 </head>
-
 <body>
 
 <div class="container">
@@ -167,26 +148,24 @@
 <script>
 const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook/chat-ai";
 
-function addMessage(text, isUser=false){
+function addMessage(text, isUser = false) {
   const chatBox = document.getElementById("chatBox");
   const div = document.createElement("div");
   div.className = "message" + (isUser ? " user-message" : "");
-
   div.innerHTML = isUser
     ? `<div class="user-text">${escapeHtml(text)}</div>`
     : `<div class="ai-icon">🤖</div><div class="ai-text">${escapeHtml(text)}</div>`;
-
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function escapeHtml(text){
+function escapeHtml(text) {
   const d = document.createElement("div");
   d.textContent = text;
   return d.innerHTML;
 }
 
-function showLoading(){
+function showLoading() {
   const chatBox = document.getElementById("chatBox");
   const div = document.createElement("div");
   div.id = "loading";
@@ -200,49 +179,84 @@ function showLoading(){
       <div class="dot"></div>
     </div>`;
   chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function removeLoading(){
+function removeLoading() {
   const el = document.getElementById("loading");
-  if(el) el.remove();
+  if (el) el.remove();
 }
 
-async function send(){
+async function fetchWithRetry(url, options, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, options);
+
+      // Get raw text first
+      const text = await res.text();
+
+      // If empty response, retry
+      if (!text || text.trim() === "") {
+        if (i < retries - 1) {
+          await new Promise(r => setTimeout(r, 1000));
+          continue;
+        }
+        throw new Error("Réponse vide du serveur");
+      }
+
+      // Parse JSON
+      try {
+        const data = JSON.parse(text);
+        return data;
+      } catch (e) {
+        // Try to extract reply from malformed JSON
+        const match = text.match(/"reply"\s*:\s*"([\s\S]*?)(?:"\s*}|$)/);
+        if (match) return { reply: match[1] };
+        throw new Error("Réponse invalide: " + text.substring(0, 100));
+      }
+
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+    }
+  }
+}
+
+async function send() {
   const msg = document.getElementById("msg");
   const sendBtn = document.getElementById("sendBtn");
 
-  if(!msg.value.trim()) return;
+  if (!msg.value.trim()) return;
 
-  addMessage(msg.value,true);
-
+  addMessage(msg.value, true);
   const userMessage = msg.value;
   msg.value = "";
   sendBtn.disabled = true;
-
   showLoading();
 
   try {
-    const res = await fetch(WEBHOOK_URL,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
+    const data = await fetchWithRetry(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: userMessage })
     });
 
-    const data = await res.json();
-    console.log("Response:", data);
-
     removeLoading();
 
-    const reply = data.reply || data.choices?.[0]?.message?.content || "No response";
+    const reply = data.reply
+      || data.choices?.[0]?.message?.content
+      || data.message
+      || "Machi jawab";
 
-    addMessage(reply,false);
+    addMessage(reply, false);
 
-  } catch(err){
+  } catch (err) {
     removeLoading();
-    addMessage("Error: "+err.message,false);
+    addMessage("Khata: " + err.message, false);
   }
 
   sendBtn.disabled = false;
+  msg.focus();
 }
 </script>
 
