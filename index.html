@@ -205,14 +205,12 @@ async function fetchWithRetry(url, options, retries = 3) {
       }
 
       // Parse JSON
-      try {
-        const data = JSON.parse(text);
-        return data;
-      } catch (e) {
-        // Try to extract reply from malformed JSON
-        const match = text.match(/"reply"\s*:\s*"([\s\S]*?)(?:"\s*}|$)/);
-        if (match) return { reply: match[1] };
-        throw new Error("Réponse invalide: " + text.substring(0, 100));
+    try {
+  const data = JSON.parse(text);
+    return data;
+        } catch (e) {
+      // Ila machi JSON — rja3 text directly khabar reply
+      return { reply: text };
       }
 
     } catch (err) {
