@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGULMAM IA — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --accent: #2ea043;
+      --accent2: #388bfd;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --text: #e6edf3;
+      --text-muted: #7d8590;
+      --text-dim: #484f58;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar-logo {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .topbar-title {
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      flex: 1;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .user-badge span { color: var(--accent2); font-weight: 600; }
+
+    .btn-chat {
+      padding: 6px 16px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .btn-chat:hover { background: #3fb950; }
+
+    .btn-logout {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .btn-logout:hover { border-color: var(--accent3); color: var(--accent3); }
+
+    /* MAIN */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-icon { font-size: 24px; margin-bottom: 8px; }
+    .stat-val { font-size: 24px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent2); }
+    .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* SECTION */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* DOROS */
+    .doros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .dars-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dars-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+    .dars-card.done { border-color: rgba(46,160,67,0.4); }
+
+    .dars-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent2);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .dars-card:hover::before { opacity: 1; }
+    .dars-card.done::before { background: var(--accent); opacity: 1; }
+
+    .dars-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .dars-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .dars-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .dars-niveau { font-size: 10px; font-family: 'JetBrains Mono', monospace; padding: 2px 8px; border-radius: 4px; }
+
+    .n1ac { background: rgba(56,139,253,0.15); color: var(--accent2); }
+    .n2ac { background: rgba(210,168,255,0.15); color: var(--accent4); }
+    .n3ac { background: rgba(247,129,102,0.15); color: var(--accent3); }
+
+    .dars-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+
+    .dars-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dars-status {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-done { color: var(--accent); }
+    .status-todo { color: var(--text-dim); }
+
+    .btn-dars {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .btn-dars:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* PROGRESSION BAR */
+    .prog-section { margin-bottom: 28px; }
+
+    .prog-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
+
+    .prog-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .prog-name { font-size: 13px; font-weight: 500; }
+    .prog-score { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--accent2); }
+
+    .prog-bar-bg {
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 0.8s ease;
+    }
+
+    /* MODAL DARS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      display: none;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-title { font-size: 16px; font-weight: 700; flex: 1; }
+
+    .btn-close {
+      width: 32px; height: 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .modal-body { padding: 20px 24px; }
+
+    .modal-body h3 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--accent2); }
+    .modal-body p  { font-size: 13px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .modal-body ul { padding-right: 16px; margin-bottom: 16px; }
+    .modal-body li { font-size: 13px; color: var(--text-muted); line-height: 1.8; margin-bottom: 4px; }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-primary {
+      flex: 1;
+      padding: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .btn-primary:hover { background: #3fb950; }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .doros-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 12px 16px; }
+      .main { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">💻</div>
+  <div class="topbar-title">AGULMAM IA</div>
+  <div class="topbar-user">
+    <div class="user-badge">مرحباً <span id="topbarName">...</span></div>
+    <button class="btn-chat" onclick="window.location.href='chat.html'">💬 AI Chat</button>
+    <button class="btn-logout" onclick="logout()">خروج</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-val" id="statTotal">0</div>
+      <div class="stat-label">مجموع الدروس</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-val" id="statDone">0</div>
+      <div class="stat-label">دروس مكتملة</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-val" id="statScore">0%</div>
+      <div class="stat-label">نسبة التقدم</div>
+    </div>
+  </div>
+
+  <!-- DOROS -->
+  <div class="section-title">📖 الدروس</div>
+  <div class="doros-grid" id="dorosGrid"></div>
+
+  <!-- PROGRESSION -->
+  <div class="section-title">📊 التقدم</div>
+  <div class="prog-section" id="progSection"></div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="btn-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="markDone()">✅ تم الإنجاز</button>
+      <button class="btn-secondary" onclick="askAI()">🤖 اسأل AI عن هذا الدرس</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://pcyklvvyymyvlbrhymzj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_JnEOFW-KUOH12hok-N6g-g_bCkGt3AX";
+
+// Check login
+const taleb = JSON.parse(localStorage.getItem('taleb') || 'null');
+if (!taleb) window.location.href = 'login.html';
+
+document.getElementById('topbarName').textContent = taleb?.nom || '';
+
+// DOROS DATA
+const doros = [
+  // 1AC
+  { id: 'd1', titre: 'المعلومة والإعلاميات', niveau: '1AC', icon: '💡', couleur: 'n1ac',
+    desc: 'تعريف المعلومة وأنواعها، مجالات استخدام الإعلاميات',
+    contenu: ['تعريف المعلومة: كل بيانات يمكن معالجتها', 'أنواع المعلومة: نصية، صوتية، مرئية، رقمية', 'الإعلاميات: علم معالجة المعلومات آلياً', 'مجالات الاستخدام: التعليم، الطب، التجارة، الترفيه'] },
+  { id: 'd2', titre: 'الجهاز المعلوماتي', niveau: '1AC', icon: '🖥️', couleur: 'n1ac',
+    desc: 'مكونات الحاسوب، وحدات الإدخال والإخراج',
+    contenu: ['CPU: وحدة المعالجة المركزية — عقل الحاسوب', 'RAM: الذاكرة العشوائية — مؤقتة', 'القرص الصلب: تخزين دائم', 'وحدات الإدخال: لوحة المفاتيح، الفأرة، الميكروفون', 'وحدات الإخراج: الشاشة، الطابعة، السماعات'] },
+  { id: 'd3', titre: 'نظام التشغيل', niveau: '1AC', icon: '⚙️', couleur: 'n1ac',
+    desc: 'مفهوم نظام التشغيل ووظائفه الأساسية',
+    contenu: ['نظام التشغيل: برنامج يدير موارد الحاسوب', 'وظائفه: تشغيل البرامج، إدارة الملفات، التحكم في الأجهزة', 'Windows: سطح المكتب، مستكشف الملفات، شريط المهام', 'Linux و MacOS: أنظمة تشغيل أخرى'] },
+  { id: 'd4', titre: 'معالجة النصوص', niveau: '1AC', icon: '📝', couleur: 'n1ac',
+    desc: 'استخدام برنامج Word لإنشاء وتنسيق النصوص',
+    contenu: ['إنشاء ملف Word جديد', 'التنسيق: الخط، الحجم، اللون، التسطير', 'الفقرات: المحاذاة، المسافات', 'الحفظ والطباعة'] },
+  // 2AC
+  { id: 'd5', titre: 'الشبكة المحلية LAN', niveau: '2AC', icon: '🌐', couleur: 'n2ac',
+    desc: 'مفهوم الشبكة المحلية ومكوناتها',
+    contenu: ['الشبكة المحلية LAN: ربط أجهزة في نفس المكان', 'المكونات: كرت الشبكة، الكابل، المحول Switch', 'الفائدة: مشاركة الملفات والطابعات', 'بروتوكول TCP/IP: قواعد التواصل'] },
+  { id: 'd6', titre: 'جداول البيانات Excel', niveau: '2AC', icon: '📊', couleur: 'n2ac',
+    desc: 'الخلايا والصيغ والدوال الأساسية في Excel',
+    contenu: ['الخلية: وحدة البيانات الأساسية (A1، B2...)', 'الصيغ: تبدأ بـ = مثل =A1+B1', 'الدوال: SUM (مجموع)، AVERAGE (معدل)، MAX، MIN', 'الرسم البياني: تمثيل البيانات بصرياً'] },
+  { id: 'd7', titre: 'البرمجة بـ Logo', niveau: '2AC', icon: '⌨️', couleur: 'n2ac',
+    desc: 'تعلم الأوامر الأساسية للغة Logo',
+    contenu: ['AVANCE n: تقدم n خطوة', 'RECULE n: تراجع n خطوة', 'DROITE a: دوران يميناً بـ a درجة', 'GAUCHE a: دوران يساراً', 'LEVE-CRAYON / BAISSE-CRAYON: رفع/خفض القلم', 'REPETE n [أوامر]: تكرار n مرة'] },
+  // 3AC
+  { id: 'd8', titre: 'أنواع الشبكات', niveau: '3AC', icon: '🔗', couleur: 'n3ac',
+    desc: 'LAN، MAN، WAN والإنترنت',
+    contenu: ['LAN: شبكة محلية — مبنى أو حرم جامعي', 'MAN: شبكة مدينة — تربط أحياء أو مدن', 'WAN: شبكة واسعة — دول ومناطق', 'الإنترنت: أكبر شبكة WAN في العالم'] },
+  { id: 'd9', titre: 'العروض التقديمية PowerPoint', niveau: '3AC', icon: '🎯', couleur: 'n3ac',
+    desc: 'إنشاء وتصميم العروض التقديمية',
+    contenu: ['إنشاء شريحة جديدة', 'إضافة النصوص والصور', 'تطبيق قوالب وخلفيات', 'الانتقالات بين الشرائح', 'عرض الشرائح أمام الجمهور'] },
+  { id: 'd10', titre: 'البريد الإلكتروني', niveau: '3AC', icon: '📧', couleur: 'n3ac',
+    desc: 'إنشاء حساب وإرسال واستقبال الرسائل',
+    contenu: ['إنشاء حساب Gmail أو Hotmail', 'إرسال رسالة: المستلم، الموضوع، المحتوى', 'استقبال الرسائل والرد عليها', 'المرفقات: إضافة ملفات للرسالة', 'تنظيم صندوق البريد'] },
+];
+
+let progression = {};
+let currentDars = null;
+
+async function loadProgression() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/progression?taleb_id=eq.${taleb.id}&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    data.forEach(p => { progression[p.dars] = p; });
+  } catch(e) { console.log('progression load error', e); }
+}
+
+function renderDoros() {
+  const grid = document.getElementById('dorosGrid');
+  grid.innerHTML = '';
+
+  const niveauFilter = taleb.niveau;
+
+  doros.forEach(dars => {
+    const done = progression[dars.id]?.completed;
+    const card = document.createElement('div');
+    card.className = `dars-card ${done ? 'done' : ''}`;
+    card.innerHTML = `
+      <div class="dars-header">
+        <div class="dars-icon" style="background:var(--surface2)">${dars.icon}</div>
+        <div class="dars-title">${dars.titre}</div>
+        <span class="dars-niveau ${dars.couleur}">${dars.niveau}</span>
+      </div>
+      <div class="dars-desc">${dars.desc}</div>
+      <div class="dars-footer">
+        <span class="dars-status ${done ? 'status-done' : 'status-todo'}">${done ? '✓ مكتمل' : '○ لم يبدأ'}</span>
+        <button class="btn-dars" onclick="openDars('${dars.id}')">فتح الدرس</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderStats() {
+  const total = doros.length;
+  const done = doros.filter(d => progression[d.id]?.completed).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statScore').textContent = pct + '%';
+}
+
+function renderProgression() {
+  const sec = document.getElementById('progSection');
+  sec.innerHTML = '';
+
+  ['1AC','2AC','3AC'].forEach(niv => {
+    const nivDoros = doros.filter(d => d.niveau === niv);
+    const done = nivDoros.filter(d => progression[d.id]?.completed).length;
+    const pct = nivDoros.length ? Math.round(done / nivDoros.length * 100) : 0;
+
+    const item = document.createElement('div');
+    item.className = 'prog-item';
+    item.innerHTML = `
+      <div class="prog-top">
+        <span class="prog-name">السنة ${niv === '1AC' ? 'الأولى' : niv === '2AC' ? 'الثانية' : 'الثالثة'} إعدادي</span>
+        <span class="prog-score">${done}/${nivDoros.length} — ${pct}%</span>
+      </div>
+      <div class="prog-bar-bg">
+        <div class="prog-bar-fill" style="width:${pct}%"></div>
+      </div>`;
+    sec.appendChild(item);
+  });
+}
+
+function openDars(id) {
+  currentDars = doros.find(d => d.id === id);
+  if (!currentDars) return;
+
+  document.getElementById('modalTitle').textContent = `${currentDars.icon} ${currentDars.titre}`;
+
+  let html = `<h3>📋 محتوى الدرس</h3><p>${currentDars.desc}</p><h3>📌 النقاط الأساسية</h3><ul>`;
+  currentDars.contenu.forEach(c => { html += `<li>${c}</li>`; });
+  html += `</ul>`;
+
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  currentDars = null;
+}
+
+async function markDone() {
+  if (!currentDars) return;
+  try {
+    // Check if exists
+    const existing = progression[currentDars.id];
+    if (existing) {
+      await fetch(`${SUPABASE_URL}/rest/v1/progression?id=eq.${existing.id}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: true })
+      });
+      progression[currentDars.id].completed = true;
+    } else {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/progression`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+        body: JSON.stringify({ taleb_id: taleb.id, dars: currentDars.id, completed: true, score: 100 })
+      });
+      const data = await res.json();
+      if (data[0]) progression[currentDars.id] = data[0];
+    }
+  } catch(e) { console.log(e); }
+
+  closeModalDirect();
+  renderDoros();
+  renderStats();
+  renderProgression();
+}
+
+function askAI() {
+  if (!currentDars) return;
+  localStorage.setItem('aiQuestion', `شرح ليا درس: ${currentDars.titre}`);
+  window.location.href = 'chat.html';
+}
+
+function logout() {
+  localStorage.removeItem('taleb');
+  window.location.href = 'login.html';
+}
+
+// Init
+(async () => {
+  await loadProgression();
+  renderDoros();
+  renderStats();
+  renderProgression();
+})();
+</script>
+</body>
+</html>
