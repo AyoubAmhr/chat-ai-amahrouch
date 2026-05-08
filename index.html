@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AGULMAM IA — تسجيل الدخول</title>
+  <title>AMA IA — تسجيل الدخول</title>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -47,17 +47,7 @@
       margin-bottom: 32px;
     }
 
-    .logo-icon {
-      width: 64px; height: 64px;
-      background: var(--accent);
-      border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 16px;
-      box-shadow: 0 0 40px rgba(46,160,67,0.3);
-    }
+   
 
     .logo-title {
       font-size: 24px;
@@ -165,6 +155,96 @@
       margin-left: 8px;
     }
 
+
+    /* LOGIN CONTAINER */
+.login-wrap{
+    width: 100%;
+    max-width: 420px;
+    margin: auto;
+    padding: 40px 30px;
+    border-radius: 25px;
+
+    /* Glass Effect */
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(14px);
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+
+    text-align: center;
+}
+
+/* LOGO AREA */
+.logo-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+/* LOGO IMAGE */
+.logo-area img{
+    width: 170px !important;
+    height: 170px !important;
+    object-fit: contain;
+
+    padding: 12px;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+
+    transition: 0.4s ease;
+}
+
+/* HOVER EFFECT */
+.logo-area img:hover{
+    transform: scale(1.05) rotate(3deg);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+}
+
+/* TITLE */
+.logo-title{
+    margin-top: 18px;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* SUBTITLE */
+.logo-sub{
+    margin-top: 8px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* RESPONSIVE */
+@media(max-width: 500px){
+
+    .login-wrap{
+        padding: 30px 20px;
+    }
+
+    .logo-area img{
+        width: 130px !important;
+        height: 130px !important;
+    }
+
+    .logo-title{
+        font-size: 26px;
+    }
+
+    .logo-sub{
+        font-size: 15px;
+    }
+}
+
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -172,13 +252,13 @@
 
 <div class="login-wrap">
   <div class="logo-area">
-    <div class="logo-icon">💻</div>
-    <div class="logo-title">AGULMAM IA</div>
-    <div class="logo-sub">منصة الإعلاميات التعليمية — الإعدادي المغربي</div>
+    <img style="height: 250px; width: 250px;" src="./images/logos/logo.png" alt="">
+    <div class="logo-title">AMA IA</div>
+    <div class="logo-sub">منصتك التعليمية</div>
   </div>
 
   <div class="card">
-    <div class="card-title">🔐 تسجيل الدخول</div>
+    <div class="card-title">تسجيل الدخول</div>
 
     <div class="field">
       <label>USERNAME</label>
@@ -244,7 +324,7 @@ async function login() {
 
 function showError(msg) {
   const err = document.getElementById('errorMsg');
-  err.textContent = '⚠️ ' + msg;
+  err.textContent = msg;
   err.style.display = 'block';
 }
 
