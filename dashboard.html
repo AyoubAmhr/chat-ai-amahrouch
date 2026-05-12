@@ -417,18 +417,8 @@ if (!taleb) window.location.href = 'index.html';
 
 document.getElementById('topbarName').textContent = taleb?.nom || '';
 
-const doros = [
-  { id: 'd1', titre: 'المعلومة والإعلاميات', niveau: '1AC', icon: '💡', couleur: 'n1ac', desc: 'تعريف المعلومة وأنواعها، مجالات استخدام الإعلاميات', contenu: ['تعريف المعلومة: كل بيانات يمكن معالجتها', 'أنواع المعلومة: نصية، صوتية، مرئية، رقمية', 'الإعلاميات: علم معالجة المعلومات آلياً', 'مجالات الاستخدام: التعليم، الطب، التجارة، الترفيه'] },
-  { id: 'd2', titre: 'الجهاز المعلوماتي', niveau: '1AC', icon: '🖥️', couleur: 'n1ac', desc: 'مكونات الحاسوب، وحدات الإدخال والإخراج', contenu: ['CPU: وحدة المعالجة المركزية — عقل الحاسوب', 'RAM: الذاكرة العشوائية — مؤقتة', 'القرص الصلب: تخزين دائم', 'وحدات الإدخال: لوحة المفاتيح، الفأرة، الميكروفون', 'وحدات الإخراج: الشاشة، الطابعة، السماعات'] },
-  { id: 'd3', titre: 'نظام التشغيل', niveau: '1AC', icon: '⚙️', couleur: 'n1ac', desc: 'مفهوم نظام التشغيل ووظائفه الأساسية', contenu: ['نظام التشغيل: برنامج يدير موارد الحاسوب', 'وظائفه: تشغيل البرامج، إدارة الملفات، التحكم في الأجهزة', 'Windows: سطح المكتب، مستكشف الملفات، شريط المهام', 'Linux و MacOS: أنظمة تشغيل أخرى'] },
-  { id: 'd4', titre: 'معالجة النصوص', niveau: '1AC', icon: '📝', couleur: 'n1ac', desc: 'استخدام برنامج Word لإنشاء وتنسيق النصوص', contenu: ['إنشاء ملف Word جديد', 'التنسيق: الخط، الحجم، اللون، التسطير', 'الفقرات: المحاذاة، المسافات', 'الحفظ والطباعة'] },
-  { id: 'd5', titre: 'الشبكة المحلية LAN', niveau: '2AC', icon: '🌐', couleur: 'n2ac', desc: 'مفهوم الشبكة المحلية ومكوناتها', contenu: ['الشبكة المحلية LAN: ربط أجهزة في نفس المكان', 'المكونات: كرت الشبكة، الكابل، المحول Switch', 'الفائدة: مشاركة الملفات والطابعات', 'بروتوكول TCP/IP: قواعد التواصل'] },
-  { id: 'd6', titre: 'جداول البيانات Excel', niveau: '2AC', icon: '📊', couleur: 'n2ac', desc: 'الخلايا والصيغ والدوال الأساسية في Excel', contenu: ['الخلية: وحدة البيانات الأساسية (A1، B2...)', 'الصيغ: تبدأ بـ = مثل =A1+B1', 'الدوال: SUM (مجموع)، AVERAGE (معدل)، MAX، MIN', 'الرسم البياني: تمثيل البيانات بصرياً'] },
-  { id: 'd7', titre: 'البرمجة بـ Logo', niveau: '2AC', icon: '⌨️', couleur: 'n2ac', desc: 'تعلم الأوامر الأساسية للغة Logo', contenu: ['AVANCE n: تقدم n خطوة', 'RECULE n: تراجع n خطوة', 'DROITE a: دوران يميناً بـ a درجة', 'GAUCHE a: دوران يساراً', 'LEVE-CRAYON / BAISSE-CRAYON: رفع/خفض القلم', 'REPETE n [أوامر]: تكرار n مرة'] },
-  { id: 'd8', titre: 'أنواع الشبكات', niveau: '3AC', icon: '🔗', couleur: 'n3ac', desc: 'LAN، MAN، WAN والإنترنت', contenu: ['LAN: شبكة محلية — مبنى أو حرم جامعي', 'MAN: شبكة مدينة — تربط أحياء أو مدن', 'WAN: شبكة واسعة — دول ومناطق', 'الإنترنت: أكبر شبكة WAN في العالم'] },
-  { id: 'd9', titre: 'العروض التقديمية PowerPoint', niveau: '3AC', icon: '🎯', couleur: 'n3ac', desc: 'إنشاء وتصميم العروض التقديمية', contenu: ['إنشاء شريحة جديدة', 'إضافة النصوص والصور', 'تطبيق قوالب وخلفيات', 'الانتقالات بين الشرائح', 'عرض الشرائح أمام الجمهور'] },
-  { id: 'd10', titre: 'البريد الإلكتروني', niveau: '3AC', icon: '📧', couleur: 'n3ac', desc: 'إنشاء حساب وإرسال واستقبال الرسائل', contenu: ['إنشاء حساب Gmail أو Hotmail', 'إرسال رسالة: المستلم، الموضوع، المحتوى', 'استقبال الرسائل والرد عليها', 'المرفقات: إضافة ملفات للرسالة', 'تنظيم صندوق البريد'] },
-];
+function renderDoros()
+let doros = [];
 
 let progression = {};
 let currentDars = null;
@@ -443,6 +433,24 @@ async function loadProgression() {
   } catch(e) { console.log('Error loading progression', e); }
 }
 
+async function loadCourses() {
+  try {
+
+    const response = await fetch('./data/courses.json');
+
+    doros = await response.json();
+
+    renderDoros();
+    renderStats();
+    renderProgression();
+
+  } catch (error) {
+
+    console.error('Erreur chargement cours:', error);
+
+  }
+}
+  
 function renderDoros() {
   const grid = document.getElementById('dorosGrid');
   grid.innerHTML = '';
@@ -543,10 +551,11 @@ function askAI() {
 function logout() { localStorage.removeItem('taleb'); window.location.href = 'login.html'; }
 
 (async () => {
+
   await loadProgression();
-  renderDoros();
-  renderStats();
-  renderProgression();
+
+  await loadCourses();
+
 })();
 </script>
 </body>
