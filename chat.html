@@ -337,7 +337,7 @@ function addMessage(text, isUser = false) {
   if (isUser) {
     row.innerHTML = `<div class="msg-avatar user">AA</div><div class="msg-content"><div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${getTime()}</div></div>`;
   } else {
-    row.innerHTML = `<div class="msg-avatar ai">🤖</div><div class="msg-content"><div class="msg-name">AGULMAM IA</div><div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${getTime()}</div></div>`;
+    row.innerHTML = `<div class="msg-avatar ai">🤖</div><div class="msg-content"><div class="msg-name">AMA IA</div><div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${getTime()}</div></div>`;
   }
   chat.appendChild(row);
   chat.scrollTop = chat.scrollHeight;
@@ -348,7 +348,7 @@ function showTyping() {
   const chat = document.getElementById('chat');
   const row = document.createElement('div');
   row.className = 'msg-row ai'; row.id = 'typing';
-  row.innerHTML = `<div class="msg-avatar ai">🤖</div><div class="msg-content"><div class="msg-name">AGULMAM IA</div><div class="typing-bubble"><span class="typing-label">كيتفكر...</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div>`;
+  row.innerHTML = `<div class="msg-avatar ai">🤖</div><div class="msg-content"><div class="msg-name">AMA IA</div><div class="typing-bubble"><span class="typing-label">كيتفكر...</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div>`;
   chat.appendChild(row);
   chat.scrollTop = chat.scrollHeight;
 }
