@@ -322,7 +322,7 @@
 <script>
 const WEBHOOK_URL = "https://ayoubamahrouch.app.n8n.cloud/webhook/chat-ai";
 const taleb = JSON.parse(localStorage.getItem('taleb') || 'null');
-if (!taleb) window.location.href = 'login.html';
+if (!taleb) window.location.href = 'index.html';
 document.getElementById('topbarName').textContent = taleb?.nom || '';
 
 function getTime() { return new Date().toLocaleTimeString('fr-MA', { hour: '2-digit', minute: '2-digit' }); }
