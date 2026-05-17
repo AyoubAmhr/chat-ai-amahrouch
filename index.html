@@ -430,9 +430,16 @@ async function signup(){
       }
     );
 
-    if(!res.ok){
-      throw new Error('فشل إنشاء الحساب');
-    }
+  if(!res.ok){
+
+   const errData = await res.json();
+
+   console.log(errData);
+
+   throw new Error(
+      errData.message || 'فشل إنشاء الحساب'
+   );
+}
 
     show(
       'signupSuccess',
