@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AMA IA</title>
+  <title>AMA</title>
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
@@ -54,4 +54,476 @@
       text-align:center;
       margin-bottom:25px;
     }
+
+    .logo img{
+      width:140px;
+      height:140px;
+      object-fit:contain;
+      border-radius:50%;
+      background:rgba(255,255,255,.1);
+      padding:10px;
+    }
+
+    .logo h1{
+      margin-top:15px;
+      font-size:32px;
+      font-family:'JetBrains Mono',monospace;
+    }
+
+    .logo p{
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .tabs button{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:var(--surface2);
+      color:var(--muted);
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .tabs button.active{
+      background:var(--accent2);
+      color:white;
+    }
+
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      color:var(--muted);
+      font-size:12px;
+      font-family:'JetBrains Mono',monospace;
+    }
+
+    .field input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--surface2);
+      color:white;
+      outline:none;
+      direction:ltr;
+    }
+
+    .field input:focus{
+      border-color:var(--accent2);
+    }
+
+    .btn{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      background:var(--accent);
+      color:white;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    .btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    .message{
+      margin-top:14px;
+      padding:12px;
+      border-radius:10px;
+      display:none;
+      font-size:13px;
+    }
+
+    .error{
+      background:rgba(248,81,73,.12);
+      color:#ff7b72;
+      border:1px solid rgba(248,81,73,.2);
+    }
+
+    .success{
+      background:rgba(46,160,67,.12);
+      color:#56d364;
+      border:1px solid rgba(46,160,67,.2);
+    }
+
+    .payment-box{
+      margin-top:18px;
+      background:rgba(56,139,253,.08);
+      border:1px dashed rgba(56,139,253,.3);
+      border-radius:12px;
+      padding:14px;
+      line-height:1.8;
+    }
+
+    .payment-box h3{
+      margin-bottom:10px;
+      color:#7cc5ff;
+    }
+
+    .footer{
+      margin-top:20px;
+      text-align:center;
+      color:#666;
+      font-size:11px;
+      font-family:'JetBrains Mono',monospace;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="logo">
+    <img src="./images/logos/logo.png">
+    <h1>AMA</h1>
+    <p>منصتك التعليمية الذكية</p>
+  </div>
+
+  <div class="tabs">
+    <button id="loginTab" class="active" onclick="switchTab('login')">
+      تسجيل الدخول
+    </button>
+
+    <button id="signupTab" onclick="switchTab('signup')">
+      إنشاء حساب
+    </button>
+  </div>
+
+
+  <!-- LOGIN -->
+
+  <div class="card" id="loginCard">
+
+    <div class="field">
+      <label>USERNAME</label>
+      <input id="loginUsername" type="text">
+    </div>
+
+    <div class="field">
+      <label>PASSWORD</label>
+      <input id="loginPassword" type="password">
+    </div>
+
+    <button class="btn" id="loginBtn" onclick="login()">
+      دخول
+    </button>
+
+    <div class="message error" id="loginError"></div>
+
+  </div>
+
+
+  <!-- SIGNUP -->
+
+  <div class="card hidden" id="signupCard">
+
+    <div class="field">
+      <label>USERNAME</label>
+      <input id="signupUsername" type="text">
+    </div>
+
+    <div class="field">
+      <label>PASSWORD</label>
+      <input id="signupPassword" type="password">
+    </div>
+
+    <div class="field">
+      <label>CONFIRM PASSWORD</label>
+      <input id="signupConfirm" type="password">
+    </div>
+
+    <div class="payment-box">
+
+      <h3>معلومات الدفع</h3>
+
+      قم بتحويل 15DH إلى:
+
+      <br><br>
+
+      CIH BANK
+      <br>
+      RIB: 011780XXXXXXXXXXXX
+
+      <br><br>
+
+      أو عبر CashPlus / WafaCash:
+      <br>
+      06XXXXXXXX
+
+      <br><br>
+
+      بعد التحقق من التحويل سيتم تفعيل الحساب.
+
+    </div>
+
+    <button class="btn" id="signupBtn" onclick="signup()">
+      إنشاء الحساب
+    </button>
+
+    <div class="message error" id="signupError"></div>
+    <div class="message success" id="signupSuccess"></div>
+
+  </div>
+
+  <div class="footer">
+    AMAHROUCH AYOUB • AGULMAM IA
+  </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+
+function switchTab(tab){
+
+  const loginCard = document.getElementById('loginCard');
+  const signupCard = document.getElementById('signupCard');
+
+  const loginTab = document.getElementById('loginTab');
+  const signupTab = document.getElementById('signupTab');
+
+  if(tab === 'login'){
+
+    loginCard.classList.remove('hidden');
+    signupCard.classList.add('hidden');
+
+    loginTab.classList.add('active');
+    signupTab.classList.remove('active');
+
+  }else{
+
+    signupCard.classList.remove('hidden');
+    loginCard.classList.add('hidden');
+
+    signupTab.classList.add('active');
+    loginTab.classList.remove('active');
+
+  }
+
+}
+
+
+function show(id,msg){
+
+  const el = document.getElementById(id);
+
+  el.style.display = 'block';
+  el.textContent = msg;
+
+}
+
+
+function hide(id){
+
+  document.getElementById(id).style.display = 'none';
+
+}
+
+
+async function signup(){
+
+  hide('signupError');
+  hide('signupSuccess');
+
+  const username = document.getElementById('signupUsername').value.trim();
+  const password = document.getElementById('signupPassword').value.trim();
+  const confirm = document.getElementById('signupConfirm').value.trim();
+
+  const btn = document.getElementById('signupBtn');
+
+  if(!username || !password || !confirm){
+
+    show('signupError','أكمل جميع الحقول');
+    return;
+
+  }
+
+  if(password !== confirm){
+
+    show('signupError','كلمتا المرور غير متطابقتين');
+    return;
+
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = 'جاري الإنشاء...';
+
+  try{
+
+    // check duplicate
+
+    const check = await fetch(
+      `${SUPABASE_URL}/rest/v1/tolab?username=eq.${username}&select=id`,
+      {
+        headers:{
+          apikey:SUPABASE_KEY,
+          Authorization:`Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    const existing = await check.json();
+
+    if(existing.length > 0){
+
+      show('signupError','اسم المستخدم موجود مسبقاً');
+
+      btn.disabled = false;
+      btn.innerHTML = 'إنشاء الحساب';
+
+      return;
+
+    }
+
+
+    // create account
+
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/tolab`,
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':'application/json',
+          apikey:SUPABASE_KEY,
+          Authorization:`Bearer ${SUPABASE_KEY}`,
+          Prefer:'return=representation'
+        },
+
+        body:JSON.stringify({
+          username,
+          password,
+          status:'pending',
+          niveau:'student'
+        })
+      }
+    );
+
+    if(!res.ok){
+      throw new Error('فشل إنشاء الحساب');
+    }
+
+    show(
+      'signupSuccess',
+      'تم إنشاء الحساب بنجاح. سيتم التفعيل بعد التحقق من الدفع.'
+    );
+
+  }catch(err){
+
+    show('signupError',err.message);
+
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'إنشاء الحساب';
+
+}
+
+
+async function login(){
+
+  hide('loginError');
+
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  const btn = document.getElementById('loginBtn');
+
+  if(!username || !password){
+
+    show('loginError','أدخل اسم المستخدم وكلمة المرور');
+    return;
+
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = 'جاري التحقق...';
+
+  try{
+
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/tolab?username=eq.${username}&password=eq.${password}&select=*`,
+      {
+        headers:{
+          apikey:SUPABASE_KEY,
+          Authorization:`Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if(data.length === 0){
+
+      show('loginError','بيانات الدخول خاطئة');
+
+      btn.disabled = false;
+      btn.innerHTML = 'دخول';
+
+      return;
+
+    }
+
+    const user = data[0];
+
+    if(user.status !== 'active'){
+
+      show('loginError','الحساب غير مفعل بعد');
+
+      btn.disabled = false;
+      btn.innerHTML = 'دخول';
+
+      return;
+
+    }
+
+    localStorage.setItem('taleb',JSON.stringify(user));
+
+    window.location.href = 'dashboard.html';
+
+  }catch(err){
+
+    show('loginError','خطأ في الاتصال');
+
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'دخول';
+
+}
+
+</script>
+
+</body>
 </html>
