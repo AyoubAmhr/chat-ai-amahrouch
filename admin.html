@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-
     :root{
       --bg:#0d1117;
       --surface:#161b22;
@@ -33,7 +32,24 @@
     }
 
     h1{
-      margin-bottom:25px;
+      margin-bottom:20px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .logout{
+      background:var(--danger);
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      font-weight:700;
     }
 
     .table-wrap{
@@ -65,22 +81,11 @@
       font-weight:700;
     }
 
-    .pending{
-      background:rgba(255,165,0,.12);
-      color:orange;
-    }
+    .pending{ background:rgba(255,165,0,.12); color:orange; }
+    .active{ background:rgba(46,160,67,.12); color:#56d364; }
+    .blocked{ background:rgba(248,81,73,.12); color:#ff7b72; }
 
-    .active{
-      background:rgba(46,160,67,.12);
-      color:#56d364;
-    }
-
-    .blocked{
-      background:rgba(248,81,73,.12);
-      color:#ff7b72;
-    }
-
-    button{
+    button.action{
       border:none;
       padding:10px 14px;
       border-radius:10px;
@@ -90,19 +95,26 @@
       font-weight:700;
     }
 
-    .btn-active{
-      background:var(--accent);
-    }
+    .btn-active{ background:var(--accent); }
+    .btn-block{ background:var(--danger); }
 
-    .btn-block{
-      background:var(--danger);
+    .loading{
+      opacity:0.6;
+      pointer-events:none;
     }
 
   </style>
 </head>
+
 <body>
 
-<h1>لوحة تحكم AMA IA</h1>
+<div class="topbar">
+  <h1>لوحة تحكم AMA IA</h1>
+
+  <button class="logout" onclick="logout()">
+    تسجيل الخروج
+  </button>
+</div>
 
 <div class="table-wrap">
 
@@ -129,88 +141,125 @@ const SUPABASE_URL = "https://pcyklvvyymyvlbrhymzj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_JnEOFW-KUOH12hok-N6g-g_bCkGt3AX";
 
 
+// =========================
+// SECURITY CHECK (IMPORTANT)
+// =========================
+const user = JSON.parse(localStorage.getItem("taleb"));
+
+if(!user){
+  window.location.href = "index.html";
+}
+
+if(user.niveau !== "admin"){
+  alert("❌ غير مسموح");
+  window.location.href = "index.html";
+}
+
+
+// =========================
+// LOGOUT
+// =========================
+function logout(){
+  localStorage.removeItem("taleb");
+  window.location.href = "index.html";
+}
+
+
+// =========================
+// LOAD USERS
+// =========================
 async function loadUsers(){
 
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/tolab?select=*`,
-    {
-      headers:{
-        apikey:SUPABASE_KEY,
-        Authorization:`Bearer ${SUPABASE_KEY}`
+  const table = document.getElementById("usersTable");
+  table.innerHTML = "جاري التحميل...";
+
+  try{
+
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/tolab?select=*`,
+      {
+        headers:{
+          apikey:SUPABASE_KEY,
+          Authorization:`Bearer ${SUPABASE_KEY}`
+        }
       }
-    }
-  );
+    );
 
-  const users = await res.json();
+    const users = await res.json();
 
-  const table = document.getElementById('usersTable');
+    table.innerHTML = "";
 
-  table.innerHTML = '';
+    users.forEach(user => {
 
-  users.forEach(user => {
+      table.innerHTML += `
+        <tr>
 
-    table.innerHTML += `
+          <td>${user.id}</td>
+          <td>${user.username}</td>
 
-      <tr>
+          <td>
+            <span class="status ${user.status}">
+              ${user.status}
+            </span>
+          </td>
 
-        <td>${user.id}</td>
+          <td>
 
-        <td>${user.username}</td>
+            <button class="action btn-active"
+              onclick="updateStatus('${user.id}','active')">
+              تفعيل
+            </button>
 
-        <td>
-          <span class="status ${user.status}">
-            ${user.status}
-          </span>
-        </td>
+            <button class="action btn-block"
+              onclick="updateStatus('${user.id}','blocked')">
+              حظر
+            </button>
 
-        <td>
+          </td>
 
-          <button
-            class="btn-active"
-            onclick="updateStatus('${user.id}','active')"
-          >
-            تفعيل
-          </button>
+        </tr>
+      `;
 
-          <button
-            class="btn-block"
-            onclick="updateStatus('${user.id}','blocked')"
-          >
-            حظر
-          </button>
+    });
 
-        </td>
-
-      </tr>
-
-    `;
-
-  });
+  }catch(err){
+    table.innerHTML = "❌ خطأ في تحميل البيانات";
+  }
 
 }
 
 
+// =========================
+// UPDATE STATUS
+// =========================
 async function updateStatus(id,status){
 
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/tolab?id=eq.${id}`,
-    {
-      method:'PATCH',
+  try{
 
-      headers:{
-        'Content-Type':'application/json',
-        apikey:SUPABASE_KEY,
-        Authorization:`Bearer ${SUPABASE_KEY}`
-      },
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/tolab?id=eq.${id}`,
+      {
+        method:"PATCH",
+        headers:{
+          "Content-Type":"application/json",
+          apikey:SUPABASE_KEY,
+          Authorization:`Bearer ${SUPABASE_KEY}`
+        },
+        body:JSON.stringify({status})
+      }
+    );
 
-      body:JSON.stringify({status})
-    }
-  );
+    loadUsers();
 
-  loadUsers();
+  }catch(err){
+    alert("خطأ في التحديث");
+
+  }
 
 }
 
+
+// INIT
 loadUsers();
 
 </script>
