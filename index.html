@@ -221,6 +221,11 @@
   <!-- LOGIN -->
 
   <div class="card" id="loginCard">
+   
+    <div class="field">
+    <label>NAME</label>
+    <input id="signupNom" type="text">
+    </div>
 
     <div class="field">
       <label>USERNAME</label>
@@ -356,6 +361,7 @@ async function signup(){
   hide('signupError');
   hide('signupSuccess');
 
+  const nom = document.getElementById('signupNom').value.trim();
   const username = document.getElementById('signupUsername').value.trim();
   const password = document.getElementById('signupPassword').value.trim();
   const confirm = document.getElementById('signupConfirm').value.trim();
@@ -421,12 +427,19 @@ async function signup(){
           Prefer:'return=representation'
         },
 
-        body:JSON.stringify({
-          username,
-          password,
-          status:'pending',
-          niveau:'student'
-        })
+       body:JSON.stringify({
+
+  username: username,
+
+  password: password,
+
+  nom: nom,
+
+  niveau: 'student',
+
+  status: 'pending'
+
+})
       }
     );
 
