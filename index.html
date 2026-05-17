@@ -1,337 +1,885 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMA IA — تسجيل الدخول</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMA IA — تسجيل الدخول / إنشاء حساب</title>
+
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --surface2: #21262d;
-      --border: #30363d;
-      --accent: #2ea043;
-      --accent2: #388bfd;
-      --text: #e6edf3;
-      --text-muted: #7d8590;
-      --text-dim: #484f58;
-      --error: #f85149;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100dvh;
-      padding: 20px;
+    :root{
+      --bg:#0d1117;
+      --surface:#161b22;
+      --surface2:#21262d;
+      --border:#30363d;
+      --accent:#2ea043;
+      --accent2:#388bfd;
+      --text:#e6edf3;
+      --text-muted:#7d8590;
+      --text-dim:#484f58;
+      --error:#f85149;
+      --warning:#f39c12;
+      --success:#2ea043;
     }
 
-    .login-wrap {
-      width: 100%;
-      max-width: 400px;
-      animation: fadeUp 0.4s ease;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+    html,body{
+      height:100%;
     }
 
-    .logo-area {
-      text-align: center;
-      margin-bottom: 32px;
+    body{
+      font-family:'IBM Plex Sans Arabic',sans-serif;
+      background:
+      radial-gradient(circle at top right,#1f6feb22,transparent 30%),
+      radial-gradient(circle at bottom left,#2ea04322,transparent 30%),
+      var(--bg);
+
+      color:var(--text);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      min-height:100dvh;
+      padding:20px;
     }
-
-   
-
-    .logo-title {
-      font-size: 24px;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .logo-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 24px;
-      color: var(--text);
-    }
-
-    .field {
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-bottom: 6px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 10px 14px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 14px;
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-      direction: ltr;
-    }
-
-    .field input:focus { border-color: var(--accent2); }
-
-    .btn-login {
-      width: 100%;
-      padding: 12px;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
-      transition: all 0.15s;
-      margin-top: 8px;
-    }
-
-    .btn-login:hover:not(:disabled) { background: #3fb950; transform: translateY(-1px); }
-    .btn-login:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .error-msg {
-      background: rgba(248,81,73,0.1);
-      border: 1px solid rgba(248,81,73,0.3);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--error);
-      margin-top: 12px;
-      display: none;
-    }
-
-    .footer-txt {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 11px;
-      color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .footer-txt span { color: var(--accent2); }
-
-    .loading-spinner {
-      display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      vertical-align: middle;
-      margin-left: 8px;
-    }
-
-
-    /* LOGIN CONTAINER */
-.login-wrap{
-    width: 100%;
-    max-width: 420px;
-    margin: auto;
-    padding: 40px 30px;
-    border-radius: 25px;
-
-    /* Glass Effect */
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(14px);
-
-    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-
-    text-align: center;
-}
-
-/* LOGO AREA */
-.logo-area{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-
-/* LOGO IMAGE */
-.logo-area img{
-    width: 170px !important;
-    height: 170px !important;
-    object-fit: contain;
-
-    padding: 12px;
-    border-radius: 50%;
-
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-
-    transition: 0.4s ease;
-}
-
-/* HOVER EFFECT */
-.logo-area img:hover{
-    transform: scale(1.05) rotate(3deg);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.35);
-}
-
-/* TITLE */
-.logo-title{
-    margin-top: 18px;
-    font-size: 32px;
-    font-weight: 700;
-    color: white;
-    letter-spacing: 2px;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-
-/* SUBTITLE */
-.logo-sub{
-    margin-top: 8px;
-    font-size: 17px;
-    color: rgba(255,255,255,0.85);
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-/* RESPONSIVE */
-@media(max-width: 500px){
 
     .login-wrap{
-        padding: 30px 20px;
+      width:100%;
+      max-width:430px;
+      animation:fadeUp .4s ease;
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .glass-box{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(14px);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      border-radius:24px;
+
+      padding:32px;
+
+      box-shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+
+    .logo-area{
+      text-align:center;
+      margin-bottom:24px;
     }
 
     .logo-area img{
-        width: 130px !important;
-        height: 130px !important;
+      width:150px;
+      height:150px;
+      object-fit:contain;
+
+      border-radius:50%;
+      padding:12px;
+
+      background:rgba(255,255,255,.1);
+
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+
+      transition:.3s;
+    }
+
+    .logo-area img:hover{
+      transform:scale(1.04) rotate(2deg);
     }
 
     .logo-title{
-        font-size: 26px;
+      margin-top:18px;
+      font-size:32px;
+      font-weight:700;
+      color:white;
+      font-family:'JetBrains Mono',monospace;
+      letter-spacing:2px;
     }
 
     .logo-sub{
-        font-size: 15px;
+      margin-top:8px;
+      color:rgba(255,255,255,.85);
+      font-size:15px;
     }
-}
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin-bottom:22px;
+    }
+
+    .tab-btn{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+
+      background:var(--surface2);
+      color:var(--text-muted);
+
+      font-size:14px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:.2s;
+    }
+
+    .tab-btn.active{
+      background:var(--accent2);
+      color:white;
+    }
+
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+    }
+
+    .card-title{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:22px;
+      text-align:center;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:7px;
+
+      color:var(--text-muted);
+      font-size:12px;
+      font-family:'JetBrains Mono',monospace;
+      font-weight:600;
+    }
+
+    .field input{
+      width:100%;
+      padding:12px 14px;
+
+      border-radius:10px;
+      border:1px solid var(--border);
+
+      background:var(--surface2);
+      color:var(--text);
+
+      outline:none;
+
+      transition:.2s;
+
+      direction:ltr;
+
+      font-size:14px;
+    }
+
+    .field input:focus{
+      border-color:var(--accent2);
+      box-shadow:0 0 0 3px rgba(56,139,253,.15);
+    }
+
+    .btn-main{
+      width:100%;
+      padding:13px;
+
+      border:none;
+      border-radius:10px;
+
+      background:var(--accent);
+
+      color:white;
+      font-size:15px;
+      font-weight:700;
+
+      cursor:pointer;
+
+      transition:.2s;
+      margin-top:10px;
+    }
+
+    .btn-main:hover:not(:disabled){
+      transform:translateY(-1px);
+      background:#3fb950;
+    }
+
+    .btn-main:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    .message{
+      margin-top:14px;
+      padding:12px 14px;
+
+      border-radius:10px;
+
+      font-size:13px;
+
+      display:none;
+    }
+
+    .message.error{
+      background:rgba(248,81,73,.1);
+      border:1px solid rgba(248,81,73,.25);
+      color:var(--error);
+    }
+
+    .message.success{
+      background:rgba(46,160,67,.1);
+      border:1px solid rgba(46,160,67,.25);
+      color:#57d364;
+    }
+
+    .message.warning{
+      background:rgba(243,156,18,.1);
+      border:1px solid rgba(243,156,18,.25);
+      color:#ffb74d;
+    }
+
+    .payment-box{
+      margin-top:18px;
+
+      background:rgba(56,139,253,.08);
+
+      border:1px dashed rgba(56,139,253,.35);
+
+      border-radius:12px;
+
+      padding:14px;
+    }
+
+    .payment-title{
+      font-weight:700;
+      margin-bottom:8px;
+      color:#7cc5ff;
+    }
+
+    .payment-price{
+      font-size:22px;
+      font-weight:700;
+      color:white;
+      margin-bottom:10px;
+    }
+
+    .small-note{
+      color:var(--text-muted);
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    .footer-txt{
+      text-align:center;
+      margin-top:20px;
+
+      color:var(--text-dim);
+      font-size:11px;
+
+      font-family:'JetBrains Mono',monospace;
+    }
+
+    .footer-txt span{
+      color:var(--accent2);
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .loading-spinner{
+      display:inline-block;
+      width:16px;
+      height:16px;
+
+      border:2px solid rgba(255,255,255,.3);
+      border-top-color:white;
+
+      border-radius:50%;
+
+      animation:spin .8s linear infinite;
+
+      vertical-align:middle;
+      margin-right:8px;
+    }
+
+    @keyframes spin{
+      to{
+        transform:rotate(360deg);
+      }
+    }
+
+    @media(max-width:500px){
+
+      .glass-box{
+        padding:22px;
+      }
+
+      .logo-area img{
+        width:120px;
+        height:120px;
+      }
+
+      .logo-title{
+        font-size:25px;
+      }
+
+    }
+
   </style>
 </head>
+
 <body>
 
 <div class="login-wrap">
-  <div class="logo-area">
-    <img style="height: 250px; width: 250px;" src="./images/logos/logo.png" alt="">
-    <div class="logo-title">AMA IA</div>
-    <div class="logo-sub">منصتك التعليمية</div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">تسجيل الدخول</div>
+  <div class="glass-box">
 
-    <div class="field">
-      <label>USERNAME</label>
-      <input id="username" type="text" placeholder="اسم المستخدم" autocomplete="username">
+    <div class="logo-area">
+      <img src="./images/logos/logo.png" alt="AMA IA">
+      <div class="logo-title">AMA IA</div>
+      <div class="logo-sub">منصتك التعليمية الذكية</div>
     </div>
 
-    <div class="field">
-      <label>PASSWORD</label>
-      <input id="password" type="password" placeholder="كلمة المرور" autocomplete="current-password" onkeypress="if(event.key==='Enter') login()">
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">
+        تسجيل الدخول
+      </button>
+
+      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">
+        إنشاء حساب
+      </button>
     </div>
 
-    <button class="btn-login" id="loginBtn" onclick="login()">دخول</button>
+    <!-- LOGIN -->
+    <div class="card" id="loginCard">
 
-    <div class="error-msg" id="errorMsg"></div>
+      <div class="card-title">تسجيل الدخول</div>
+
+      <div class="field">
+        <label>USERNAME</label>
+        <input
+          id="loginUsername"
+          type="text"
+          placeholder="اسم المستخدم"
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="field">
+        <label>PASSWORD</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="كلمة المرور"
+          autocomplete="current-password"
+          onkeypress="if(event.key==='Enter') login()"
+        >
+      </div>
+
+      <button class="btn-main" id="loginBtn" onclick="login()">
+        دخول
+      </button>
+
+      <div class="message error" id="loginError"></div>
+
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="card hidden" id="signupCard">
+
+      <div class="card-title">إنشاء حساب جديد</div>
+
+      <div class="field">
+        <label>USERNAME</label>
+        <input
+          id="signupUsername"
+          type="text"
+          placeholder="اسم المستخدم الجديد"
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="field">
+        <label>PASSWORD</label>
+        <input
+          id="signupPassword"
+          type="password"
+          placeholder="كلمة المرور"
+          autocomplete="new-password"
+        >
+      </div>
+
+      <div class="field">
+        <label>CONFIRM PASSWORD</label>
+        <input
+          id="signupConfirmPassword"
+          type="password"
+          placeholder="تأكيد كلمة المرور"
+          autocomplete="new-password"
+        >
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="payment-box">
+
+        <div class="payment-title">
+          رسوم إنشاء الحساب
+        </div>
+
+        <div class="payment-price">
+          15 DH
+        </div>
+
+        <div class="small-note">
+          يجب إتمام الدفع بنجاح قبل إنشاء الحساب.
+          يمكنك لاحقًا ربط بوابة دفع حقيقية مثل Stripe أو PayPal أو CMI المغربية.
+        </div>
+
+      </div>
+
+      <button class="btn-main" id="signupBtn" onclick="registerUser()">
+        إنشاء الحساب ودفع 15 DH
+      </button>
+
+      <div class="message error" id="signupError"></div>
+      <div class="message success" id="signupSuccess"></div>
+      <div class="message warning" id="paymentStatus"></div>
+
+    </div>
+
+    <div class="footer-txt">
+      by <span>AMAHROUCH AYOUB</span> • AGULMAM IA
+    </div>
+
   </div>
 
-  <div class="footer-txt">by <span>AMAHROUCH AYOUB</span> • AGULMAM IA</div>
 </div>
 
 <script>
-const SUPABASE_URL = "https://pcyklvvyymyvlbrhymzj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_JnEOFW-KUOH12hok-N6g-g_bCkGt3AX";
 
-async function login() {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const btn = document.getElementById('loginBtn');
-  const err = document.getElementById('errorMsg');
+  // =========================
+  // SUPABASE CONFIG
+  // =========================
 
-  if (!username || !password) {
-    showError('أكمل username و password');
-    return;
-  }
+  const SUPABASE_URL = "https://pcyklvvyymyvlbrhymzj.supabase.co";
 
-  btn.disabled = true;
-  btn.innerHTML = 'جاري التحقق <span class="loading-spinner"></span>';
-  err.style.display = 'none';
+  const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/tolab?username=eq.${encodeURIComponent(username)}&password=eq.${encodeURIComponent(password)}&select=*`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-      }
-    });
 
-    const data = await res.json();
+  // =========================
+  // TAB SWITCH
+  // =========================
 
-    if (data && data.length > 0) {
-      const taleb = data[0];
-      localStorage.setItem('taleb', JSON.stringify(taleb));
-      window.location.href = 'dashboard.html';
-    } else {
-      showError('username أو password غلط');
+  function switchTab(tab){
+
+    const loginCard = document.getElementById("loginCard");
+    const signupCard = document.getElementById("signupCard");
+
+    const loginBtn = document.getElementById("loginTabBtn");
+    const signupBtn = document.getElementById("signupTabBtn");
+
+    if(tab === "login"){
+
+      loginCard.classList.remove("hidden");
+      signupCard.classList.add("hidden");
+
+      loginBtn.classList.add("active");
+      signupBtn.classList.remove("active");
+
+    }else{
+
+      signupCard.classList.remove("hidden");
+      loginCard.classList.add("hidden");
+
+      signupBtn.classList.add("active");
+      loginBtn.classList.remove("active");
+
     }
-  } catch (e) {
-    showError('خطأ في الاتصال: ' + e.message);
+
   }
 
-  btn.disabled = false;
-  btn.innerHTML = 'دخول';
-}
 
-function showError(msg) {
-  const err = document.getElementById('errorMsg');
-  err.textContent = msg;
-  err.style.display = 'block';
-}
+  // =========================
+  // MESSAGE HELPERS
+  // =========================
 
-// Check already logged in
-if (localStorage.getItem('taleb')) {
-  window.location.href = 'dashboard.html';
-}
+  function showMessage(id, text, type = "error"){
+
+    const el = document.getElementById(id);
+
+    el.className = `message ${type}`;
+    el.textContent = text;
+    el.style.display = "block";
+
+  }
+
+  function hideMessage(id){
+
+    document.getElementById(id).style.display = "none";
+
+  }
+
+
+  // =========================
+  // LOGIN
+  // =========================
+
+  async function login(){
+
+    hideMessage("loginError");
+
+    const username =
+      document.getElementById("loginUsername").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value.trim();
+
+    const btn =
+      document.getElementById("loginBtn");
+
+    if(!username || !password){
+
+      showMessage(
+        "loginError",
+        "يرجى إدخال اسم المستخدم وكلمة المرور"
+      );
+
+      return;
+    }
+
+    btn.disabled = true;
+
+    btn.innerHTML =
+      'جاري التحقق <span class="loading-spinner"></span>';
+
+    try{
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/tolab?username=eq.${encodeURIComponent(username)}&password=eq.${encodeURIComponent(password)}&select=*`,
+        {
+          headers:{
+            "apikey":SUPABASE_KEY,
+            "Authorization":`Bearer ${SUPABASE_KEY}`
+          }
+        }
+      );
+
+      const data = await response.json();
+
+      if(data && data.length > 0){
+
+        localStorage.setItem(
+          "taleb",
+          JSON.stringify(data[0])
+        );
+
+        window.location.href = "dashboard.html";
+
+      }else{
+
+        showMessage(
+          "loginError",
+          "اسم المستخدم أو كلمة المرور غير صحيحة"
+        );
+
+      }
+
+    }catch(error){
+
+      showMessage(
+        "loginError",
+        "خطأ في الاتصال بالخادم"
+      );
+
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = "دخول";
+
+  }
+
+
+  // =========================
+  // PAYMENT SIMULATION
+  // =========================
+
+  async function simulatePayment(){
+
+    showMessage(
+      "paymentStatus",
+      "جاري معالجة الدفع...",
+      "warning"
+    );
+
+    // simulate delay
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
+    // random success simulation
+    const success = Math.random() > 0.15;
+
+    if(success){
+
+      showMessage(
+        "paymentStatus",
+        "تم الدفع بنجاح ✔",
+        "success"
+      );
+
+      return {
+        success:true,
+        transactionId:"TXN_" + Date.now()
+      };
+
+    }else{
+
+      showMessage(
+        "paymentStatus",
+        "فشل الدفع. حاول مرة أخرى",
+        "error"
+      );
+
+      return {
+        success:false
+      };
+
+    }
+
+  }
+
+
+  // =========================
+  // REGISTER
+  // =========================
+
+  async function registerUser(){
+
+    hideMessage("signupError");
+    hideMessage("signupSuccess");
+
+    const username =
+      document.getElementById("signupUsername").value.trim();
+
+    const password =
+      document.getElementById("signupPassword").value.trim();
+
+    const confirmPassword =
+      document.getElementById("signupConfirmPassword").value.trim();
+
+    const btn =
+      document.getElementById("signupBtn");
+
+    // VALIDATION
+
+    if(!username || !password || !confirmPassword){
+
+      showMessage(
+        "signupError",
+        "يرجى تعبئة جميع الحقول"
+      );
+
+      return;
+    }
+
+    if(username.length < 4){
+
+      showMessage(
+        "signupError",
+        "اسم المستخدم يجب أن يحتوي على 4 أحرف على الأقل"
+      );
+
+      return;
+    }
+
+    if(password.length < 6){
+
+      showMessage(
+        "signupError",
+        "كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل"
+      );
+
+      return;
+    }
+
+    if(password !== confirmPassword){
+
+      showMessage(
+        "signupError",
+        "كلمتا المرور غير متطابقتين"
+      );
+
+      return;
+    }
+
+    btn.disabled = true;
+
+    btn.innerHTML =
+      'جاري التحقق <span class="loading-spinner"></span>';
+
+    try{
+
+      // =========================
+      // CHECK DUPLICATE USERNAME
+      // =========================
+
+      const checkUser = await fetch(
+        `${SUPABASE_URL}/rest/v1/tolab?username=eq.${encodeURIComponent(username)}&select=id`,
+        {
+          headers:{
+            "apikey":SUPABASE_KEY,
+            "Authorization":`Bearer ${SUPABASE_KEY}`
+          }
+        }
+      );
+
+      const existingUser = await checkUser.json();
+
+      if(existingUser.length > 0){
+
+        showMessage(
+          "signupError",
+          "اسم المستخدم موجود مسبقًا"
+        );
+
+        btn.disabled = false;
+        btn.innerHTML = "إنشاء الحساب ودفع 15 DH";
+
+        return;
+      }
+
+
+      // =========================
+      // PAYMENT STEP
+      // =========================
+
+      btn.innerHTML =
+        'جاري الدفع <span class="loading-spinner"></span>';
+
+      const paymentResult = await simulatePayment();
+
+      if(!paymentResult.success){
+
+        btn.disabled = false;
+        btn.innerHTML = "إنشاء الحساب ودفع 15 DH";
+
+        return;
+      }
+
+
+      // =========================
+      // CREATE ACCOUNT
+      // =========================
+
+      btn.innerHTML =
+        'جاري إنشاء الحساب <span class="loading-spinner"></span>';
+
+      const insertResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/tolab`,
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":"application/json",
+            "apikey":SUPABASE_KEY,
+            "Authorization":`Bearer ${SUPABASE_KEY}`,
+            "Prefer":"return=representation"
+          },
+
+          body:JSON.stringify({
+
+            username:username,
+
+            password:password,
+
+            niveau:"student",
+
+            payment_status:"paid",
+
+            payment_amount:15,
+
+            payment_transaction_id:
+              paymentResult.transactionId
+
+          })
+
+        }
+      );
+
+      if(!insertResponse.ok){
+
+        throw new Error(
+          "فشل إنشاء الحساب"
+        );
+
+      }
+
+      const createdUser =
+        await insertResponse.json();
+
+      showMessage(
+        "signupSuccess",
+        "تم إنشاء الحساب بنجاح ✔",
+        "success"
+      );
+
+      // auto login
+      localStorage.setItem(
+        "taleb",
+        JSON.stringify(createdUser[0])
+      );
+
+      setTimeout(() => {
+
+        window.location.href = "dashboard.html";
+
+      }, 1800);
+
+    }catch(error){
+
+      showMessage(
+        "signupError",
+        error.message || "حدث خطأ غير متوقع"
+      );
+
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = "إنشاء الحساب ودفع 15 DH";
+
+  }
+
+
+  // =========================
+  // AUTO LOGIN CHECK
+  // =========================
+
+  if(localStorage.getItem("taleb")){
+
+    window.location.href = "dashboard.html";
+
+  }
+
 </script>
+
 </body>
 </html>
