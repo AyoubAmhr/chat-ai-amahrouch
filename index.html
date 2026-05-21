@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AMA</title>
+  <title>AMA - منصتك التعليمية الذكية</title>
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
 
     :root{
-      --bg:#0d1117;
-      --surface:#161b22;
-      --surface2:#21262d;
-      --border:#30363d;
-      --accent:#2ea043;
-      --accent2:#388bfd;
-      --text:#e6edf3;
-      --muted:#7d8590;
-      --error:#f85149;
-      --warning:#f39c12;
+      --color-primary: #FF9500;
+      --color-light1: #FFF2C9;
+      --color-light2: #C3D2AE;
+      --color-mid1: #8DB19B;
+      --color-mid2: #618E89;
+      --color-dark1: #426B73;
+      --color-dark2: #2F4858;
+      --text: #2c3e50;
+      --text-light: #7f8c8d;
+      --text-muted: #95a5a6;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.1);
+      --shadow-lg: 0 20px 50px rgba(0,0,0,0.15);
     }
 
     *{
@@ -34,9 +38,10 @@
 
     body{
       font-family:'IBM Plex Sans Arabic',sans-serif;
-      background:var(--bg);
+      background:#f8fafb;
       color:var(--text);
       line-height:1.6;
+      overflow-x:hidden;
     }
 
     /* HEADER */
@@ -45,17 +50,27 @@
       position:fixed;
       top:0;
       width:100%;
-      background:rgba(13,17,23,0.8);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--border);
+      background:var(--white);
+      border-bottom:2px solid var(--color-light1);
       z-index:1000;
       padding:15px 0;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+      animation:slideDown 0.5s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
     }
 
     .header-content{
-      max-width:1200px;
+      max-width:1300px;
       margin:0 auto;
-      padding:0 20px;
+      padding:0 30px;
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -64,188 +79,302 @@
     .logo-header{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
+      font-weight:700;
     }
 
     .logo-header h1{
       font-size:28px;
-      font-family:'JetBrains Mono',monospace;
-      color:var(--accent2);
-    }
-
-    .nav-buttons{
-      display:flex;
-      gap:12px;
-    }
-
-    .nav-btn{
-      padding:10px 20px;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:transparent;
-      color:var(--text);
-      cursor:pointer;
-      font-weight:600;
-      transition:all 0.3s;
-      text-decoration:none;
-    }
-
-    .nav-btn:hover{
-      border-color:var(--accent2);
-      color:var(--accent2);
-    }
-
-    .nav-btn.primary{
-      background:var(--accent2);
-      border-color:var(--accent2);
-      color:white;
-    }
-
-    .nav-btn.primary:hover{
-      opacity:0.9;
-    }
-
-    /* HERO */
-
-    .hero{
-      margin-top:60px;
-      padding:80px 20px;
-      text-align:center;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      background:linear-gradient(135deg,rgba(56,139,253,0.05) 0%,rgba(46,160,67,0.05) 100%);
-    }
-
-    .hero-logo{
-      width:120px;
-      height:120px;
-      margin:0 auto 30px;
-      object-fit:contain;
-      border-radius:50%;
-      background:rgba(255,255,255,0.1);
-      padding:10px;
-      border:2px solid var(--accent2);
-    }
-
-    .hero h1{
-      font-size:48px;
-      font-weight:700;
-      margin-bottom:20px;
-      background:linear-gradient(90deg,var(--accent2),var(--accent));
+      background:linear-gradient(135deg, var(--color-primary) 0%, var(--color-mid1) 100%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       background-clip:text;
     }
 
+    .logo-circle{
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg, var(--color-primary) 0%, var(--color-mid1) 100%);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:bold;
+    }
+
+    .nav-buttons{
+      display:flex;
+      gap:15px;
+      align-items:center;
+    }
+
+    .nav-btn{
+      padding:10px 20px;
+      border:2px solid transparent;
+      border-radius:8px;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      font-weight:600;
+      transition:all 0.3s ease;
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .nav-btn:hover{
+      color:var(--color-primary);
+      border-color:var(--color-primary);
+    }
+
+    .nav-btn.primary{
+      background:var(--color-primary);
+      border-color:var(--color-primary);
+      color:white;
+      border-radius:25px;
+      padding:12px 30px;
+    }
+
+    .nav-btn.primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(255, 149, 0, 0.3);
+    }
+
+    /* HERO */
+
+    .hero{
+      margin-top:80px;
+      padding:80px 30px;
+      text-align:center;
+      min-height:90vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg, var(--color-light1) 0%, rgba(195, 210, 174, 0.3) 100%);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 149, 0, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(97, 142, 137, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:1;
+      max-width:800px;
+    }
+
+    .hero-logo{
+      width:140px;
+      height:140px;
+      margin:0 auto 30px;
+      object-fit:contain;
+      border-radius:50%;
+      background:var(--white);
+      padding:15px;
+      box-shadow:var(--shadow-lg);
+      border:4px solid var(--color-primary);
+      animation:float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero h1{
+      font-size:56px;
+      font-weight:700;
+      margin-bottom:20px;
+      color:var(--text);
+      word-spacing:9999px;
+    }
+
     .hero p{
       font-size:20px;
-      color:var(--muted);
-      max-width:600px;
-      margin:0 auto 40px;
+      color:var(--text-light);
+      max-width:700px;
+      margin:0 auto 50px;
+      line-height:1.8;
     }
 
     .hero-buttons{
       display:flex;
-      gap:15px;
+      gap:20px;
       justify-content:center;
       flex-wrap:wrap;
-      margin-bottom:60px;
+      margin-bottom:40px;
     }
 
     .btn-hero{
-      padding:14px 40px;
+      padding:16px 45px;
       font-size:16px;
       font-weight:700;
       border:none;
-      border-radius:10px;
+      border-radius:25px;
       cursor:pointer;
-      transition:all 0.3s;
+      transition:all 0.3s ease;
       text-decoration:none;
       display:inline-block;
+      box-shadow:var(--shadow);
     }
 
     .btn-login{
-      background:var(--accent2);
+      background:var(--color-primary);
       color:white;
     }
 
     .btn-login:hover{
-      opacity:0.9;
-      transform:translateY(-2px);
-      box-shadow:0 10px 25px rgba(56,139,253,0.3);
+      transform:translateY(-3px);
+      box-shadow:0 15px 35px rgba(255, 149, 0, 0.4);
     }
 
     .btn-signup{
-      background:var(--accent);
+      background:var(--color-mid1);
       color:white;
     }
 
     .btn-signup:hover{
-      opacity:0.9;
-      transform:translateY(-2px);
-      box-shadow:0 10px 25px rgba(46,160,67,0.3);
+      transform:translateY(-3px);
+      box-shadow:0 15px 35px rgba(141, 177, 155, 0.4);
+    }
+
+    .scroll-indicator{
+      animation:bounce 2s infinite;
+      margin-top:30px;
+      font-size:24px;
+      color:var(--color-primary);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     /* FEATURES */
 
     .features{
-      max-width:1200px;
+      max-width:1300px;
       margin:0 auto;
-      padding:80px 20px;
+      padding:100px 30px;
     }
 
     .section-title{
       text-align:center;
-      font-size:36px;
+      font-size:42px;
       font-weight:700;
-      margin-bottom:60px;
+      margin-bottom:20px;
+      color:var(--text);
+    }
+
+    .section-subtitle{
+      text-align:center;
+      font-size:18px;
+      color:var(--text-light);
+      margin-bottom:70px;
+      max-width:600px;
+      margin-left:auto;
+      margin-right:auto;
     }
 
     .features-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
       gap:30px;
     }
 
     .feature-card{
-      background:var(--surface);
-      border:1px solid var(--border);
+      background:var(--white);
+      border:none;
       border-radius:16px;
-      padding:30px;
-      transition:all 0.3s;
+      padding:40px;
+      transition:all 0.3s ease;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
 
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-mid1));
+    }
+
+    .feature-card:nth-child(1)::before { background: linear-gradient(90deg, var(--color-primary), var(--color-light1)); }
+    .feature-card:nth-child(2)::before { background: linear-gradient(90deg, var(--color-mid1), var(--color-light2)); }
+    .feature-card:nth-child(3)::before { background: linear-gradient(90deg, var(--color-mid2), var(--color-dark1)); }
+    .feature-card:nth-child(4)::before { background: linear-gradient(90deg, var(--color-dark1), var(--color-dark2)); }
+    .feature-card:nth-child(5)::before { background: linear-gradient(90deg, var(--color-light2), var(--color-mid1)); }
+    .feature-card:nth-child(6)::before { background: linear-gradient(90deg, var(--color-primary), var(--color-mid2)); }
+
     .feature-card:hover{
-      border-color:var(--accent2);
-      box-shadow:0 10px 30px rgba(56,139,253,0.1);
-      transform:translateY(-5px);
+      transform:translateY(-10px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.12);
     }
 
     .feature-icon{
-      font-size:40px;
-      margin-bottom:15px;
+      font-size:50px;
+      margin-bottom:20px;
+      display:inline-block;
+      width:70px;
+      height:70px;
+      background:linear-gradient(135deg, var(--color-light1), var(--color-light2));
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
+    .feature-card:nth-child(1) .feature-icon { background:linear-gradient(135deg, var(--color-light1), #FFE5B4); }
+    .feature-card:nth-child(2) .feature-icon { background:linear-gradient(135deg, var(--color-light2), var(--color-mid1)); }
+    .feature-card:nth-child(3) .feature-icon { background:linear-gradient(135deg, var(--color-mid1), var(--color-mid2)); }
+    .feature-card:nth-child(4) .feature-icon { background:linear-gradient(135deg, var(--color-mid2), var(--color-dark1)); }
+    .feature-card:nth-child(5) .feature-icon { background:linear-gradient(135deg, var(--color-light2), var(--color-light1)); }
+    .feature-card:nth-child(6) .feature-icon { background:linear-gradient(135deg, var(--color-primary), var(--color-mid1)); }
+
     .feature-card h3{
-      font-size:20px;
-      margin-bottom:12px;
-      color:var(--accent2);
+      font-size:22px;
+      margin-bottom:15px;
+      color:var(--text);
+      font-weight:700;
     }
 
     .feature-card p{
-      color:var(--muted);
+      color:var(--text-light);
       line-height:1.8;
+      font-size:15px;
     }
 
     /* ABOUT */
 
     .about{
-      background:var(--surface);
-      padding:80px 20px;
-      margin-top:60px;
+      background:linear-gradient(135deg, var(--color-dark2) 0%, var(--color-dark1) 100%);
+      padding:100px 30px;
+      color:var(--white);
     }
 
     .about-content{
@@ -254,61 +383,96 @@
     }
 
     .about h2{
-      font-size:32px;
+      font-size:42px;
       margin-bottom:30px;
       text-align:center;
+      font-weight:700;
     }
 
     .about p{
-      font-size:16px;
-      color:var(--muted);
-      margin-bottom:20px;
+      font-size:18px;
+      color:rgba(255,255,255,0.9);
+      margin-bottom:25px;
       line-height:1.9;
+      text-align:justify;
+    }
+
+    .about-highlight{
+      background:rgba(255,255,255,0.15);
+      border-left:4px solid var(--color-primary);
+      padding:20px;
+      border-radius:8px;
+      margin:30px 0;
     }
 
     /* CTA */
 
     .cta-section{
-      max-width:1200px;
+      max-width:1300px;
       margin:0 auto;
-      padding:80px 20px;
+      padding:100px 30px;
       text-align:center;
     }
 
     .cta-box{
-      background:rgba(56,139,253,0.1);
-      border:2px solid var(--accent2);
-      border-radius:16px;
-      padding:60px 30px;
+      background:linear-gradient(135deg, var(--color-primary) 0%, var(--color-mid1) 100%);
+      border-radius:20px;
+      padding:80px 40px;
+      box-shadow:var(--shadow-lg);
+      color:var(--white);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cta-box > * {
+      position: relative;
+      z-index: 1;
     }
 
     .cta-box h2{
-      font-size:32px;
+      font-size:48px;
       margin-bottom:20px;
+      font-weight:700;
     }
 
     .cta-box p{
-      font-size:18px;
-      color:var(--muted);
+      font-size:20px;
+      color:rgba(255,255,255,0.95);
       margin-bottom:40px;
     }
 
     /* FOOTER */
 
     footer{
-      background:var(--surface);
-      border-top:1px solid var(--border);
-      padding:30px 20px;
+      background:var(--text);
+      border-top:4px solid var(--color-primary);
+      padding:40px 30px;
       text-align:center;
-      color:var(--muted);
-      font-size:12px;
+      color:var(--white);
+      font-size:14px;
+    }
+
+    .footer-content{
+      max-width:1300px;
+      margin:0 auto;
     }
 
     /* RESPONSIVE */
 
     @media(max-width:768px){
       .hero h1{
-        font-size:32px;
+        font-size:36px;
       }
 
       .hero p{
@@ -326,8 +490,7 @@
 
       .hero-buttons{
         flex-direction:column;
-        max-width:300px;
-        margin:0 auto 40px;
+        max-width:100%;
       }
 
       .btn-hero{
@@ -336,6 +499,18 @@
 
       .features-grid{
         grid-template-columns:1fr;
+      }
+
+      .section-title{
+        font-size:32px;
+      }
+
+      .cta-box h2{
+        font-size:32px;
+      }
+
+      .cta-box p{
+        font-size:16px;
       }
     }
 
@@ -348,6 +523,7 @@
 <header>
   <div class="header-content">
     <div class="logo-header">
+      <div class="logo-circle">A</div>
       <h1>AMA</h1>
     </div>
     <div class="nav-buttons">
@@ -361,14 +537,19 @@
 <!-- HERO SECTION -->
 
 <section class="hero">
-  <img src="./images/logos/logo.png" alt="AMA Logo" class="hero-logo">
-  <h1>AMA</h1>
-  <p> منصتك التعليمية الذكية للتعلم والتطور المستمر في مادة المعلوميات</p>
-  <div class="hero-buttons">
-    <a href="auth.html" class="btn-hero btn-login">تسجيل الدخول</a>
-    <a href="auth.html" class="btn-hero btn-signup">إنشاء حساب</a>
-    <!-- je veux ub background -->
+  <div class="hero-content">
+    <img src="./images/logos/logo.png" alt="AMA Logo" class="hero-logo">
+    <h1>AMA</h1>
+    <p>منصتك التعليمية الذكية للتعلم والتطور المستمر في مادة المعلوميات</p>
+    
+    <div class="hero-buttons">
+      <a href="auth.html" class="btn-hero btn-login">تسجيل الدخول</a>
+      <a href="auth.html" class="btn-hero btn-signup">إنشاء حساب</a>
+    </div>
 
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down"></i>
+    </div>
   </div>
 </section>
 
@@ -376,18 +557,43 @@
 
 <section class="features" id="featuresSection">
   <h2 class="section-title">ماذا نقدم لك؟</h2>
+  <p class="section-subtitle">كل ما تحتاجه لتحقيق أحلامك التعليمية في مكان واحد</p>
   
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-icon">📚</div>
       <h3>دروس تفاعلية</h3>
-      <p>محتوى تعليمي شامل وسهل الفهم مع شرح مفصل لكل درس</p>
+      <p>محتوى تعليمي شامل وسهل الفهم مع شرح مفصل لكل درس من قبل معلمين متخصصين</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>تقييم ذكي</h3>
+      <p>نظام تقييم متقدم يساعدك على متابعة تقدمك وتحسين مستواك بشكل مستمر</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>شهادات معتمدة</h3>
+      <p>احصل على شهادات رسمية عند إكمال الدورات بنجاح لإثراء سيرتك الذاتية</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">👨‍🏫</div>
+      <h3>معلمون خبراء</h3>
+      <p>تعلم من معلمين متخصصين وذوي خبرة عملية في مجالات المعلوميات المختلفة</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">📱</div>
       <h3>متاح على جميع الأجهزة</h3>
-      <p>تعلم متى تشاء وأينما تشاء على هاتفك أو جهازك</p>
+      <p>تعلم متى تشاء وأينما تشاء على هاتفك أو جهازك اللوحي أو حاسوبك</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>دعم مستمر</h3>
+      <p>احصل على الدعم والمساعدة من فريقنا المتخصص في أي وقت تحتاج</p>
     </div>
   </div>
 </section>
@@ -399,22 +605,30 @@
     <h2>عن منصة AMA</h2>
     
     <p>
-      منصة AMA هي منصة تعليمية ذكية تسعى لتوفير تجربة تعليمية متميزة وشاملة لجميع المتعلمين. 
-      نحن نؤمن بأن التعليم الجيد هو حق للجميع، لذا نعمل على توفير محتوى تعليمي عالي الجودة بأسعار معقولة.
+      منصة AMA هي منصة تعليمية ذكية تسعى لتوفير تجربة تعليمية متميزة وشاملة لجميع المتعلمين في مجال المعلوميات. 
+      نحن نؤمن بأن التعليم الجيد هو حق للجميع، لذا نعمل على توفير محتوى تعليمي عالي الجودة بأسعار معقولة وفي متناول الجميع.
     </p>
 
+    <div class="about-highlight">
+      <p>
+        تم تصميم منصتنا بعناية فائقة لتلبية احتياجات المتعلمين في العصر الرقمي. نوفر دورات تفاعلية، 
+        شرح مفصل للدروس، واختبارات ذكية تساعدك على تقييم مستواك والتقدم المستمر نحو أهدافك.
+      </p>
+    </div>
+
     <p>
-      تم تصميم منصتنا بعناية فائقة لتلبية احتياجات المتعلمين في العصر الرقمي. نوفر دورات تفاعلية، 
-      شرح مفصل للدروس، واختبارات ذكية تساعدك على تقييم مستواك والتقدم المستمر.
+      سواء كنت طالباً تريد تحسين مهاراتك في البرمجة أو التعمق في أي مجال آخر من مجالات المعلوميات، 
+      فإن AMA توفر لك كل ما تحتاج. انضم لآلاف الطلاب الذين استفادوا من دوراتنا وحققوا أهدافهم التعليمية.
     </p>
   </div>
 </section>
 
+<!-- CTA SECTION -->
 
 <section class="cta-section">
   <div class="cta-box">
     <h2>هل أنت مستعد للبدء؟</h2>
-    <p>انضم إلى مجتمعنا التعليمي اليوم واستمتع بتجربة تعليمية فريدة</p>
+    <p>انضم إلى مجتمعنا التعليمي اليوم واستمتع بتجربة تعليمية فريدة وممتعة</p>
     <a href="auth.html" class="btn-hero btn-signup">إنشاء حساب الآن</a>
   </div>
 </section>
@@ -422,7 +636,10 @@
 <!-- FOOTER -->
 
 <footer>
-  <p>© 2024 AMA Learning Platform. جميع الحقوق محفوظة. | AMAHROUCH AYOUB</p>
+  <div class="footer-content">
+    <p>© 2024 AMA Learning Platform - منصة AMA التعليمية الذكية | جميع الحقوق محفوظة</p>
+    <p style="margin-top:10px;">تم التطوير بعناية من قبل: AMAHROUCH AYOUB</p>
+  </div>
 </footer>
 
 <script>
@@ -434,6 +651,16 @@ function scrollToFeatures(){
 function scrollToAbout(){
   document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'});
 }
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
 
 </script>
 
