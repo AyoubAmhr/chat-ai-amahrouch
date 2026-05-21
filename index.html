@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMA - منصتك التعليمية الذكية</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --bg:#0d1117;
+      --surface:#161b22;
+      --surface2:#21262d;
+      --border:#30363d;
+      --accent:#2ea043;
+      --accent2:#388bfd;
+      --text:#e6edf3;
+      --muted:#7d8590;
+      --error:#f85149;
+      --warning:#f39c12;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'IBM Plex Sans Arabic',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    /* HEADER */
+
+    header{
+      position:fixed;
+      top:0;
+      width:100%;
+      background:rgba(13,17,23,0.8);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+      z-index:1000;
+      padding:15px 0;
+    }
+
+    .header-content{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .logo-header h1{
+      font-size:28px;
+      font-family:'JetBrains Mono',monospace;
+      color:var(--accent2);
+    }
+
+    .nav-buttons{
+      display:flex;
+      gap:12px;
+    }
+
+    .nav-btn{
+      padding:10px 20px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      font-weight:600;
+      transition:all 0.3s;
+      text-decoration:none;
+    }
+
+    .nav-btn:hover{
+      border-color:var(--accent2);
+      color:var(--accent2);
+    }
+
+    .nav-btn.primary{
+      background:var(--accent2);
+      border-color:var(--accent2);
+      color:white;
+    }
+
+    .nav-btn.primary:hover{
+      opacity:0.9;
+    }
+
+    /* HERO */
+
+    .hero{
+      margin-top:60px;
+      padding:80px 20px;
+      text-align:center;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,rgba(56,139,253,0.05) 0%,rgba(46,160,67,0.05) 100%);
+    }
+
+    .hero-logo{
+      width:120px;
+      height:120px;
+      margin:0 auto 30px;
+      object-fit:contain;
+      border-radius:50%;
+      background:rgba(255,255,255,0.1);
+      padding:10px;
+      border:2px solid var(--accent2);
+    }
+
+    .hero h1{
+      font-size:48px;
+      font-weight:700;
+      margin-bottom:20px;
+      background:linear-gradient(90deg,var(--accent2),var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .hero p{
+      font-size:20px;
+      color:var(--muted);
+      max-width:600px;
+      margin:0 auto 40px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:15px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:60px;
+    }
+
+    .btn-hero{
+      padding:14px 40px;
+      font-size:16px;
+      font-weight:700;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      transition:all 0.3s;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    .btn-login{
+      background:var(--accent2);
+      color:white;
+    }
+
+    .btn-login:hover{
+      opacity:0.9;
+      transform:translateY(-2px);
+      box-shadow:0 10px 25px rgba(56,139,253,0.3);
+    }
+
+    .btn-signup{
+      background:var(--accent);
+      color:white;
+    }
+
+    .btn-signup:hover{
+      opacity:0.9;
+      transform:translateY(-2px);
+      box-shadow:0 10px 25px rgba(46,160,67,0.3);
+    }
+
+    /* FEATURES */
+
+    .features{
+      max-width:1200px;
+      margin:0 auto;
+      padding:80px 20px;
+    }
+
+    .section-title{
+      text-align:center;
+      font-size:36px;
+      font-weight:700;
+      margin-bottom:60px;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+
+    .feature-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:30px;
+      transition:all 0.3s;
+    }
+
+    .feature-card:hover{
+      border-color:var(--accent2);
+      box-shadow:0 10px 30px rgba(56,139,253,0.1);
+      transform:translateY(-5px);
+    }
+
+    .feature-icon{
+      font-size:40px;
+      margin-bottom:15px;
+    }
+
+    .feature-card h3{
+      font-size:20px;
+      margin-bottom:12px;
+      color:var(--accent2);
+    }
+
+    .feature-card p{
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    /* ABOUT */
+
+    .about{
+      background:var(--surface);
+      padding:80px 20px;
+      margin-top:60px;
+    }
+
+    .about-content{
+      max-width:900px;
+      margin:0 auto;
+    }
+
+    .about h2{
+      font-size:32px;
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    .about p{
+      font-size:16px;
+      color:var(--muted);
+      margin-bottom:20px;
+      line-height:1.9;
+    }
+
+    /* CTA */
+
+    .cta-section{
+      max-width:1200px;
+      margin:0 auto;
+      padding:80px 20px;
+      text-align:center;
+    }
+
+    .cta-box{
+      background:rgba(56,139,253,0.1);
+      border:2px solid var(--accent2);
+      border-radius:16px;
+      padding:60px 30px;
+    }
+
+    .cta-box h2{
+      font-size:32px;
+      margin-bottom:20px;
+    }
+
+    .cta-box p{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:40px;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:var(--surface);
+      border-top:1px solid var(--border);
+      padding:30px 20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:768px){
+      .hero h1{
+        font-size:32px;
+      }
+
+      .hero p{
+        font-size:16px;
+      }
+
+      .nav-buttons{
+        flex-direction:column;
+        width:100%;
+      }
+
+      .nav-btn{
+        width:100%;
+      }
+
+      .hero-buttons{
+        flex-direction:column;
+        max-width:300px;
+        margin:0 auto 40px;
+      }
+
+      .btn-hero{
+        width:100%;
+      }
+
+      .features-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header>
+  <div class="header-content">
+    <div class="logo-header">
+      <h1>AMA</h1>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn" onclick="scrollToFeatures()">الميزات</button>
+      <button class="nav-btn" onclick="scrollToAbout()">عن المنصة</button>
+      <a href="auth.html" class="nav-btn primary">دخول / إنشاء حساب</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+  <img src="./images/logos/logo.png" alt="AMA Logo" class="hero-logo">
+  <h1>AMA</h1>
+  <p>منصتك التعليمية الذكية للتعلم والتطور المستمر</p>
+  
+  <div class="hero-buttons">
+    <a href="auth.html" class="btn-hero btn-login">تسجيل الدخول</a>
+    <a href="auth.html" class="btn-hero btn-signup">إنشاء حساب</a>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+
+<section class="features" id="featuresSection">
+  <h2 class="section-title">ماذا نقدم لك؟</h2>
+  
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📚</div>
+      <h3>دروس تفاعلية</h3>
+      <p>محتوى تعليمي شامل وسهل الفهم مع شرح مفصل لكل درس</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>تقييم ذكي</h3>
+      <p>نظام تقييم متقدم يساعدك على متابعة تقدمك وتحسينك</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>شهادات معتمدة</h3>
+      <p>احصل على شهادات رسمية عند إكمال الدورات بنجاح</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">👨‍🏫</div>
+      <h3>معلمون خبراء</h3>
+      <p>تعلم من معلمين متخصصين وذوي خبرة في مجالاتهم</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>متاح على جميع الأجهزة</h3>
+      <p>تعلم متى تشاء وأينما تشاء على هاتفك أو جهازك</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>دعم مستمر</h3>
+      <p>احصل على الدعم والمساعدة من فريقنا في أي وقت</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+
+<section class="about" id="aboutSection">
+  <div class="about-content">
+    <h2>عن منصة AMA</h2>
+    
+    <p>
+      منصة AMA هي منصة تعليمية ذكية تسعى لتوفير تجربة تعليمية متميزة وشاملة لجميع الطلاب والمتعلمين. 
+      نحن نؤمن بأن التعليم الجيد هو حق للجميع، لذا نعمل على توفير محتوى تعليمي عالي الجودة بأسعار معقولة.
+    </p>
+
+    <p>
+      تم تصميم منصتنا بعناية فائقة لتلبية احتياجات الطلاب في العصر الرقمي. نوفر دورات تفاعلية، 
+      شرح مفصل للدروس، واختبارات ذكية تساعدك على تقييم مستواك والتقدم المستمر.
+    </p>
+
+    <p>
+      سواء كنت تريد تحسين مهاراتك في البرمجة أو التعمق في أي مجال آخر، فإن AMA توفر لك كل ما تحتاج. 
+      انضم لآلاف الطلاب الذين استفادوا من دوراتنا وحققوا أهدافهم التعليمية.
+    </p>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+
+<section class="cta-section">
+  <div class="cta-box">
+    <h2>هل أنت مستعد للبدء؟</h2>
+    <p>انضم إلى مجتمعنا التعليمي اليوم واستمتع بتجربة تعليمية فريدة</p>
+    <a href="auth.html" class="btn-hero btn-signup">إنشاء حساب الآن</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <p>© 2024 AMA Learning Platform. جميع الحقوق محفوظة. | AMAHROUCH AYOUB</p>
+</footer>
+
+<script>
+
+function scrollToFeatures(){
+  document.getElementById('featuresSection').scrollIntoView({behavior:'smooth'});
+}
+
+function scrollToAbout(){
+  document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'});
+}
+
+</script>
+
+</body>
+</html>
