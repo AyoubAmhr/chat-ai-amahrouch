@@ -81,9 +81,20 @@
       font-weight:700;
     }
 
-    .pending{ background:rgba(255,165,0,.12); color:orange; }
-    .active{ background:rgba(46,160,67,.12); color:#56d364; }
-    .blocked{ background:rgba(248,81,73,.12); color:#ff7b72; }
+    .pending{
+      background:rgba(255,165,0,.12);
+      color:orange;
+    }
+
+    .active{
+      background:rgba(46,160,67,.12);
+      color:#56d364;
+    }
+
+    .blocked{
+      background:rgba(248,81,73,.12);
+      color:#ff7b72;
+    }
 
     button.action{
       border:none;
@@ -95,8 +106,13 @@
       font-weight:700;
     }
 
-    .btn-active{ background:var(--accent); }
-    .btn-block{ background:var(--danger); }
+    .btn-active{
+      background:var(--accent);
+    }
+
+    .btn-block{
+      background:var(--danger);
+    }
 
     .loading{
       opacity:0.6;
@@ -109,24 +125,29 @@
 <body>
 
 <div class="topbar">
+
   <h1>لوحة تحكم AMA IA</h1>
 
   <button class="logout" onclick="logout()">
     تسجيل الخروج
   </button>
+
 </div>
+
 
 <div class="table-wrap">
 
 <table>
 
   <thead>
+
     <tr>
       <th>ID</th>
       <th>Username</th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
+
   </thead>
 
   <tbody id="usersTable"></tbody>
@@ -135,43 +156,40 @@
 
 </div>
 
+
 <script>
 
-const SUPABASE_URL = "https://pcyklvvyymyvlbrhymzj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_JnEOFW-KUOH12hok-N6g-g_bCkGt3AX";
+const SUPABASE_URL =
+  "https://pcyklvvyymyvlbrhymzj.supabase.co";
 
-
-// =========================
-// SECURITY CHECK (IMPORTANT)
-// =========================
-const user = JSON.parse(localStorage.getItem("taleb"));
-
-if(!user){
-  window.location.href = "index.html";
-}
-
-if(user.niveau !== "admin"){
-  alert("❌ غير مسموح");
-  window.location.href = "index.html";
-}
+const SUPABASE_KEY =
+  "sb_publishable_JnEOFW-KUOH12hok-N6g-g_bCkGt3AX";
 
 
 // =========================
 // LOGOUT
 // =========================
+
 function logout(){
-  localStorage.removeItem("taleb");
+
   window.location.href = "index.html";
+
 }
 
 
 // =========================
 // LOAD USERS
 // =========================
+
 async function loadUsers(){
 
   const table = document.getElementById("usersTable");
-  table.innerHTML = "جاري التحميل...";
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="4">جاري التحميل...</td>
+    </tr>
+  `;
 
   try{
 
@@ -185,45 +203,99 @@ async function loadUsers(){
       }
     );
 
+
+    if(!res.ok){
+      throw new Error("Erreur Supabase");
+    }
+
+
     const users = await res.json();
 
     table.innerHTML = "";
 
+
+    if(users.length === 0){
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="4">
+            لا توجد حسابات
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
     users.forEach(user => {
 
       table.innerHTML += `
+
         <tr>
 
-          <td>${user.id}</td>
-          <td>${user.username}</td>
+          <td>
+            ${user.id}
+          </td>
 
           <td>
-            <span class="status ${user.status}">
-              ${user.status}
-            </span>
+            ${user.username}
           </td>
 
           <td>
 
-            <button class="action btn-active"
+            <span class="status ${user.status}">
+              ${user.status}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="action btn-active"
               onclick="updateStatus('${user.id}','active')">
+
               تفعيل
+
             </button>
 
-            <button class="action btn-block"
+
+            <button
+              class="action btn-block"
               onclick="updateStatus('${user.id}','blocked')">
+
               حظر
+
             </button>
 
           </td>
 
         </tr>
+
       `;
 
     });
 
+
   }catch(err){
-    table.innerHTML = "❌ خطأ في تحميل البيانات";
+
+    console.error(err);
+
+    table.innerHTML = `
+
+      <tr>
+
+        <td colspan="4">
+
+          ❌ خطأ في تحميل البيانات
+
+        </td>
+
+      </tr>
+
+    `;
+
   }
 
 }
@@ -232,34 +304,65 @@ async function loadUsers(){
 // =========================
 // UPDATE STATUS
 // =========================
+
 async function updateStatus(id,status){
 
   try{
 
-    await fetch(
+    const res = await fetch(
+
       `${SUPABASE_URL}/rest/v1/tolab?id=eq.${id}`,
+
       {
+
         method:"PATCH",
+
         headers:{
+
           "Content-Type":"application/json",
+
           apikey:SUPABASE_KEY,
-          Authorization:`Bearer ${SUPABASE_KEY}`
+
+          Authorization:`Bearer ${SUPABASE_KEY}`,
+
+          Prefer:"return=minimal"
+
         },
-        body:JSON.stringify({status})
+
+        body:JSON.stringify({
+          status:status
+        })
+
       }
+
     );
+
+
+    if(!res.ok){
+
+      throw new Error("Erreur lors de la mise à jour");
+
+    }
+
 
     loadUsers();
 
+
   }catch(err){
-    alert("خطأ في التحديث");
+
+    console.error(err);
+
+    alert("❌ خطأ في تحديث الحالة");
 
   }
 
 }
 
 
+// =========================
 // INIT
+// =========================
+
 loadUsers();
 
 </script>
